@@ -13,12 +13,12 @@
 <a href="https://xunit.net/" target="_blank"><img src="https://img.shields.io/badge/xUnit-2.4.2-blue" alt="xUnit"></a>
 <a href="https://github.com/moq/moq4" target="_blank"><img src="https://img.shields.io/badge/Moq-4.18.4-lightblue" alt="Moq"></a>
 <a href="https://fluentassertions.com/" target="_blank"><img src="https://img.shields.io/badge/FluentAssertions-6.12.0-9cf" alt="FluentAssertions"></a>
+<a href="https://www.microsoft.com/sql-server" target="_blank"><img src="https://img.shields.io/badge/SQL%20Server-2022-red" alt="SQL Server"></a>
 </p>
-
 
 ## Description📍
 
-Simple Payment API.
+Services for scheduling grooming for your pets at your trusted salon.
 
 # Professional .NET Application Structure
 
@@ -70,6 +70,7 @@ Contains components, utilities, and models that are shared across multiple layer
 
 - ASP.NET Core 8.0
 - Entity Framework Core
+- SQL Server
 - MediatR
 - FluentValidation
 - AutoMapper
@@ -87,14 +88,18 @@ Below is our database schema diagram showing the relationships between tables:
 
 ## SQL Scripts 💡
 
-You can find the database initialization and setup scripts in the `database/schema.sql` directory. These scripts contain:
+You can find the database initialization and setup scripts in the `database/schema-sqlserver.sql` file. This script contains:
 
+- Database creation
 - Table creation statements
 - Initial data seeding
 - Stored procedures and functions
-- Database user and permission setup
+- Database indexes and constraints
 
-To set up your database, execute the scripts in sequential order as numbered in the filenames.
+To set up your database, execute the SQL Server script in the following order:
+1. Ensure you have appropriate permissions on your SQL Server instance
+2. Execute the complete script using SQL Server Management Studio or your preferred SQL tool
+3. Verify the database and its objects are created successfully
 
 ## Installation 📦
 
@@ -108,7 +113,7 @@ git clone https://github.com/desobsesor/book-pet-grooming-api.git
 ```bash
 mvn clean install
 ```
-3. Clone the repository
+3. Run the application
 ```bash
 dotnet run --project src/BookPetGroomingAPI.API/BookPetGroomingAPI.API.csproj
 ```
@@ -117,18 +122,18 @@ dotnet run --project src/BookPetGroomingAPI.API/BookPetGroomingAPI.API.csproj
 
 _Tools and Technologies used_
 
-- [.NET 8](https://dotnet.microsoft.com/en-us/) - Plataforma de desarrollo para aplicaciones modernas y de alto rendimiento
-- [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/) - Framework para construir APIs RESTful y aplicaciones web
-- [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) - ORM para acceso a datos relacional
-- [MediatR](https://github.com/jbogard/MediatR) - Implementación de patrón Mediator y CQRS
-- [FluentValidation](https://fluentvalidation.net/) - Validación de modelos y reglas de negocio
-- [AutoMapper](https://automapper.org/) - Mapeo automático de objetos
-- [Serilog](https://serilog.net/) - Registro estructurado y logging
-- [Swagger/OpenAPI](https://swagger.io/) - Documentación interactiva de la API
-- [xUnit](https://xunit.net/) - Framework de pruebas unitarias
-- [Moq](https://github.com/moq/moq4) - Mocking framework para pruebas
-- [FluentAssertions](https://fluentassertions.com/) - Asserts expresivos para pruebas
-- [SQL Server](https://www.microsoft.com/en-us/sql-server) o [PostgreSQL](https://www.postgresql.org/) - Sistemas de gestión de bases de datos relacionales
+- [.NET 8](https://dotnet.microsoft.com/en-us/) - Development platform for modern, high-performance applications
+- [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/) - Framework for building RESTful APIs and web applications
+- [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) - Modern ORM for SQL Server database access
+- [SQL Server](https://www.microsoft.com/en-us/sql-server) - Enterprise-grade relational database management system
+- [MediatR](https://github.com/jbogard/MediatR) - Mediator pattern implementation for CQRS
+- [FluentValidation](https://fluentvalidation.net/) - Model and business rules validation
+- [AutoMapper](https://automapper.org/) - Object-to-object mapping
+- [Serilog](https://serilog.net/) - Structured logging
+- [Swagger/OpenAPI](https://swagger.io/) - Interactive API documentation
+- [xUnit](https://xunit.net/) - Unit testing framework
+- [Moq](https://github.com/moq/moq4) - Mocking framework for tests
+- [FluentAssertions](https://fluentassertions.com/) - Expressive assertions for tests
 
 ## Support 🔍
 
