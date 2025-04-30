@@ -52,12 +52,12 @@ Appointments 1 --- N Notifications
 
 ## Usage
 
-To implement this database structure, run the `schema.sql` file in your PostgreSQL instance:
+To implement this database structure, run the `schema-sqlserver.sql` file in your SQL Server instance:
 
-```bash
-psql -U username -d database_name -f schema.sql
+```sql
+sqlcmd -S server_name -d database_name -i schema-sqlserver.sql
 ```
 
 Where:
-- `username` is your PostgreSQL username
-- `database_name` is the name of the database where you want to implement the schema
+- `server_name` is your SQL Server instance name
+- `database_name` is the name of your database
