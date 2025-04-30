@@ -82,12 +82,12 @@ Contains components, utilities, and models that are shared across multiple layer
 Below is our database schema diagram showing the relationships between tables:
 
 <p align="center">
-  <img src="./docs/images/er-min.png" alt="Database Schema" width="800"/>
+  <img src="src/BookPetGroomingAPI.Shared/Assets/Images/er-bookpetgrooaming-min.png" alt="Database Schema" width="700"/>
 </p>
 
 ## SQL Scripts 💡
 
-You can find the database initialization and setup scripts in the `scripts/sql` directory. These scripts contain:
+You can find the database initialization and setup scripts in the `database/schema.sql` directory. These scripts contain:
 
 - Table creation statements
 - Initial data seeding

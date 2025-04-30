@@ -13,7 +13,7 @@ using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.API.Controllers;
 using MediatR;
 
-namespace BookPetGroomingAPI.UnitTests.API.Controllers
+namespace BookPetGroomingAPI.UnitTests.Controllers
 {
     public class ProductsControllerTests
     {
@@ -32,7 +32,7 @@ namespace BookPetGroomingAPI.UnitTests.API.Controllers
             // Arrange
             var productId = 10;
             var query = new GetProductByIdQuery(productId);
-            var product = new ProductoDto { Id = productId, Nombre = "Test Product" };
+            var product = new ProductDto { Id = productId, Name = "Test Product" };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetProductByIdQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(product);
 
@@ -40,7 +40,7 @@ namespace BookPetGroomingAPI.UnitTests.API.Controllers
             var result = await _controller.GetProductById(productId);
 
             // Assert
-            result.Should().BeOfType<ActionResult<ProductoDto>>();
+            result.Should().BeOfType<ActionResult<ProductDto>>();
             var okResult = (result.Result as OkObjectResult);
             okResult.Should().NotBeNull();
             okResult!.Value.Should().BeEquivalentTo(product);
@@ -52,8 +52,8 @@ namespace BookPetGroomingAPI.UnitTests.API.Controllers
             // Arrange
             var products = new List<ProductDto>
             {
-                new() { Id = 1, Nombre = "Producto 1", Precio = 100 },
-                new() { Id = 2, Nombre = "Producto 2", Precio = 200 }
+                new() { Id = 1, Name = "Producto 1", Price = 100 },
+                new() { Id = 2, Name = "Producto 2", Price = 200 }
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetProductsQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(products);
