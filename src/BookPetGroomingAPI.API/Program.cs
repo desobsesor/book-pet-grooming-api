@@ -1,0 +1,113 @@
+using System.IO.Compression;
+using System.Reflection;
+using BookPetGroomingAPI.API.Middlewares;
+using BookPetGroomingAPI.Application;
+using BookPetGroomingAPI.Infrastructure;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using BookPetGroomingAPI.API.Filters;
+
+Console.WriteLine("Starting Program.cs execution..."); // Debug log
+
+Console.WriteLine("Creating WebApplication builder..."); // Debug log
+var builder = WebApplication.CreateBuilder(args);
+
+// Configurar Serilog
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
+// Register layer services
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Configure API
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilterAttribute>();
+});
+builder.Services.AddEndpointsApiExplorer();
+
+// Configure Swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Book Pet Grooming API",
+        Version = "v1",
+        Description = "API with clean architecture and good practices",
+        Contact = new OpenApiContact
+        {
+            Name = "Development Team",
+            Email = "development@BookPetGroomingAPI.com"
+        },
+        License = new OpenApiLicense
+        {
+            Name = "MIT License",
+            Url = new Uri("https://opensource.org/licenses/MIT")
+        }
+    });
+
+    // Including XML comments for API documentation
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath);
+    }
+});
+
+// Configure response compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.EnableForHttps = true;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+var app = builder.Build();
+
+// Configure HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookPetGroomingAPI API v1"));
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHsts();
+}
+
+// Enable response compression
+app.UseResponseCompression();
+
+// Global error handling middleware
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
+// Configure CORS
+app.UseCors("AllowAll");
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
