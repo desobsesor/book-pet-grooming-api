@@ -5,8 +5,15 @@ using BookPetGroomingAPI.Application.Features.Pets.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class PetController(IMediator mediator) : ApiControllerBase(mediator)
+[Route("api/pets")]
+public class PetController : ApiControllerBase
 {
+    private readonly ILogger<PetController> _logger;
+
+    public PetController(IMediator mediator, ILogger<PetController> logger) : base(mediator)
+    {
+        _logger = logger;
+    }
 
     /// <summary>
     /// Retrieves all pets

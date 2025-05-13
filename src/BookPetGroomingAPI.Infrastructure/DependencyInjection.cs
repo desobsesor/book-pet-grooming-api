@@ -19,7 +19,13 @@ public static class DependencyInjection
 
         // Register repositories
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<IBreedRepository, BreedRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IGroomerRepository, GroomerRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<IPetCategoryRepository, PetCategoryRepository>();
+        services.AddScoped<IPetRepository, PetRepository>();
 
         return services;
     }
