@@ -5,11 +5,8 @@ using BookPetGroomingAPI.Application.Features.Breeds.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class BreedController : ApiControllerBase
+public class BreedController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public BreedController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all breeds

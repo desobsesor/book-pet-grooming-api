@@ -9,11 +9,17 @@ using Serilog;
 using BookPetGroomingAPI.API.Filters;
 
 Console.WriteLine("Starting Program.cs execution..."); // Debug log
-
 Console.WriteLine("Creating WebApplication builder..."); // Debug log
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar Serilog
+var logsDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
+if (!Directory.Exists(logsDirectory))
+{
+    Directory.CreateDirectory(logsDirectory);
+}
+
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 

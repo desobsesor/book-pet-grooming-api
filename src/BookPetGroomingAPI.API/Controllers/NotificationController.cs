@@ -5,11 +5,8 @@ using BookPetGroomingAPI.Application.Features.Notifications.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class NotificationController : ApiControllerBase
+public class NotificationController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public NotificationController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all notifications
