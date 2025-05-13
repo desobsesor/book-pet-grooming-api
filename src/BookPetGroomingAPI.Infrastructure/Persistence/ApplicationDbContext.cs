@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using BookPetGroomingAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookPetGroomingAPI.Infrastructure.Persistence;
 
@@ -56,8 +56,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<Groomer>(entity =>
         {
             entity.HasKey(e => e.GroomerId);
-            entity.Property(e => e.FirstName).HasMaxLength(100).IsRequired();
-            entity.Property(e => e.LastName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.GroomerId).HasColumnName("groomer_id"); // Explicit column name configuration
+            entity.Property(e => e.FirstName).HasColumnName("first_name").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.LastName).HasColumnName("last_name").HasMaxLength(100).IsRequired();
             entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.Specialization).HasMaxLength(100);
@@ -70,7 +71,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Customer entity configuration
         modelBuilder.Entity<Customer>(entity =>
         {
+            entity.ToTable("Customers");
             entity.HasKey(e => e.CustomerId);
+            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
             entity.Property(e => e.FirstName).HasMaxLength(100).IsRequired();
             entity.Property(e => e.LastName).HasMaxLength(100).IsRequired();
             entity.Property(e => e.Email).HasMaxLength(150);

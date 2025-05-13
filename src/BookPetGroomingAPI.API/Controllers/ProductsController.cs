@@ -6,11 +6,8 @@ using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class ProductsController : ApiControllerBase
+public class ProductsController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public ProductsController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all products

@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
-using BookPetGroomingAPI.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookPetGroomingAPI.Infrastructure.Persistence.Repositories;
 
@@ -12,9 +11,9 @@ public class CustomerRepository(ApplicationDbContext context) : ICustomerReposit
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<Customer?> GetByIdAsync(int id)
+    public async Task<Customer?> GetByIdAsync(int customerId)
     {
-        return await _context.Customers.FindAsync(id);
+        return await _context.Customers.FindAsync(customerId);
     }
 
     public async Task<IEnumerable<Customer>> GetAllAsync()

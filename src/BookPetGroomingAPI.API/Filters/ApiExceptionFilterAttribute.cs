@@ -9,19 +9,13 @@ namespace BookPetGroomingAPI.API.Filters;
 /// </summary>
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
-    private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-
     /// <summary>
-    /// Constructor that initializes exception handlers
+    /// Exception filter constructor
     /// </summary>
     public ApiExceptionFilterAttribute()
     {
-        _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
-        {
-            { typeof(ValidationException), HandleValidationException },
-            { typeof(NotFoundException), HandleNotFoundException },
-            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException }
-        };
+        // Simplified constructor: we no longer need to initialize a dictionary
+        // because we use pattern matching directly in the HandleException method
     }
 
     /// <summary>
@@ -35,21 +29,36 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleException(ExceptionContext context)
     {
-        var type = context.Exception.GetType();
-        if (_exceptionHandlers.ContainsKey(type))
+        // Optimization: Using pattern matching to handle exceptions more directly
+        // and avoid dictionary lookups when possible
+        switch (context.Exception)
         {
-            _exceptionHandlers[type].Invoke(context);
-            return;
-        }
+            case ValidationException validationException:
+                HandleValidationException(context);
+                return;
 
-        if (!context.ModelState.IsValid)
-        {
-            HandleInvalidModelStateException(context);
-            return;
+            case NotFoundException notFoundException:
+                HandleNotFoundException(context);
+                return;
+
+            case UnauthorizedAccessException unauthorizedAccessException:
+                HandleUnauthorizedAccessException(context);
+                return;
+
+            default:
+                // If it's not a specific type handled by pattern matching,
+                // we continue with ModelState verification
+
+                // Check if ModelState is invalid
+                if (!context.ModelState.IsValid)
+                {
+                    HandleInvalidModelStateException(context);
+                }
+                return;
         }
     }
 
-    private void HandleValidationException(ExceptionContext context)
+    private static void HandleValidationException(ExceptionContext context)
     {
         var exception = (ValidationException)context.Exception;
         var details = new ValidationProblemDetails(exception.Errors)
@@ -61,13 +70,13 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleNotFoundException(ExceptionContext context)
+    private static void HandleNotFoundException(ExceptionContext context)
     {
         var exception = (NotFoundException)context.Exception;
         var details = new ProblemDetails()
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "El recurso especificado no fue encontrado.",
+            Title = "The specified resource was not found.",
             Detail = exception.Message
         };
 
@@ -75,12 +84,12 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleUnauthorizedAccessException(ExceptionContext context)
+    private static void HandleUnauthorizedAccessException(ExceptionContext context)
     {
         var details = new ProblemDetails
         {
             Status = StatusCodes.Status401Unauthorized,
-            Title = "No autorizado",
+            Title = "Unauthorized",
             Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
         };
 
@@ -92,7 +101,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleInvalidModelStateException(ExceptionContext context)
+    private static void HandleInvalidModelStateException(ExceptionContext context)
     {
         var details = new ValidationProblemDetails(context.ModelState)
         {
