@@ -1,14 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookPetGroomingAPI.Domain.Entities
 {
     /// <summary>
     /// Represents a category for pets (e.g., Dog, Cat).
     /// </summary>
+    [Table("pet_categories", Schema = "dbo")]
     public class PetCategory
     {
-        public int CategoryId { get; private set; }
+        [Key]
+        [Column("category_id")]
+        public int PetCategoryId { get; private set; }
         public string Name { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
+        [Column("created_at")]
         public DateTime CreatedAt { get; private set; }
+        [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
 
         private PetCategory() { }

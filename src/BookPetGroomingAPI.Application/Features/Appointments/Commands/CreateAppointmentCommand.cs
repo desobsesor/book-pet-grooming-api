@@ -5,7 +5,7 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
     /// <summary>
     /// Command to create a new pet grooming appointment
     /// </summary>
-    public class CreateAppointmentCommand(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, TimeSpan estimatedDuration, string status, decimal price, string? notes) : IRequest<int>
+    public class CreateAppointmentCommand(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, int estimatedDuration, string status, decimal price, string? notes) : IRequest<int>
     {
         /// <summary>
         /// Pet ID for the appointment
@@ -30,7 +30,7 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
         /// <summary>
         /// Estimated duration of the appointment
         /// </summary>
-        public TimeSpan EstimatedDuration { get; set; } = estimatedDuration;
+        public int EstimatedDuration { get; set; } = estimatedDuration;
 
         /// <summary>
         /// Current status of the appointment (e.g. Scheduled, Completed, Cancelled)

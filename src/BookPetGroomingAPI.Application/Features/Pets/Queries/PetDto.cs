@@ -8,6 +8,7 @@ public class PetDto : IMapFrom<Pet>
 {
     public int PetId { get; set; }
     public required string Name { get; set; }
+    public decimal Weight { get; set; }
     public DateTime DateOfBirth { get; set; }
     public required string Gender { get; set; }
     public int CustomerId { get; set; }
