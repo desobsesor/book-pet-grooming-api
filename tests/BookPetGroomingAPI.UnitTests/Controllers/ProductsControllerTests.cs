@@ -1,10 +1,13 @@
 using BookPetGroomingAPI.API.Controllers;
+using BookPetGroomingAPI.Application.Features.Products.Commands;
 using BookPetGroomingAPI.Application.Features.Products.Commands.CreateProduct;
+using BookPetGroomingAPI.Application.Features.Products.Queries;
 using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
 using BookPetGroomingAPI.Application.Features.Products.Queries.GetProducts;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -14,11 +17,13 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
     {
         private readonly Mock<IMediator> _mediatorMock;
         private readonly ProductsController _controller;
+        private readonly ILogger<ProductsController> _logger;
 
         public ProductsControllerTests()
         {
             _mediatorMock = new Mock<IMediator>();
-            _controller = new ProductsController(_mediatorMock.Object);
+            _logger = new Mock<ILogger<ProductsController>>().Object;
+            _controller = new ProductsController(_mediatorMock.Object, _logger);
         }
 
         [Fact]

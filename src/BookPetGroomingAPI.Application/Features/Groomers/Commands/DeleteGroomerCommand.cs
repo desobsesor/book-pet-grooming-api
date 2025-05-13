@@ -2,7 +2,7 @@ using MediatR;
 
 namespace BookPetGroomingAPI.Application.Features.Groomers.Commands;
 
-public class DeleteGroomerCommand(int id) : IRequest<int>
+public class DeleteGroomerCommand(int groomerId) : IRequest<int>
 {
-    public int Id { get; } = id;
+    public int GroomerId { get; } = groomerId;
 }
