@@ -1,16 +1,38 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookPetGroomingAPI.Domain.Entities
 {
+    [Table("groomers", Schema = "dbo")]
     public class Groomer
     {
+        [Key]
+        [Column("groomer_id")]
         public int GroomerId { get; private set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Column("first_name")]
         public string FirstName { get; private set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Column("last_name")]
         public string LastName { get; private set; }
         public string? Email { get; private set; }
         public string? Phone { get; private set; }
         public string? Specialization { get; private set; }
+
+        [Column("years_of_experience")]
         public int YearsOfExperience { get; private set; }
+
+        [Column("is_active")]
         public bool IsActive { get; private set; }
+
+        [Column("created_at")]
         public DateTime CreatedAt { get; private set; }
+
+        [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
 
         // Navigation properties

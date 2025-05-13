@@ -2,8 +2,8 @@ using MediatR;
 
 namespace BookPetGroomingAPI.Application.Features.Appointments.Queries
 {
-    public class GetAppointmentByIdQuery(int id) : IRequest<AppointmentDto>
+    public class GetAppointmentByIdQuery(int appointmentId) : IRequest<AppointmentDto>
     {
-        public int Id { get; } = id;
+        public int AppointmentId { get; } = appointmentId;
     }
 }

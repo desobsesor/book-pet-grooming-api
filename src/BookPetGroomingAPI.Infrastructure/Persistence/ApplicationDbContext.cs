@@ -111,12 +111,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         });
 
         // Appointment entity configuration
+        modelBuilder.Entity<Appointment>()
+            .ToTable(tb => tb.HasTrigger("trg_create_appointment_notification"))
+            .ToTable(tb => tb.HasTrigger("trg_set_appointment_price"));
+
         modelBuilder.Entity<Appointment>(entity =>
         {
             entity.HasKey(e => e.AppointmentId);
             entity.Property(e => e.AppointmentDate).IsRequired();
             entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.Notes).HasMaxLength(500);
+            entity.Property(e => e.StartTime).IsRequired();
+            entity.Property(e => e.Price).HasPrecision(10, 2);
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
             entity.HasOne(e => e.Pet)
@@ -128,6 +134,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .HasForeignKey(e => e.GroomerId)
                   .OnDelete(DeleteBehavior.Restrict);
         });
+
 
         // Notification entity configuration
         modelBuilder.Entity<Notification>(entity =>
