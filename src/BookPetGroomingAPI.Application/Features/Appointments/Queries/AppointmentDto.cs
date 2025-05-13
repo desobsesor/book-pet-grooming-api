@@ -10,6 +10,9 @@ public class AppointmentDto : IMapFrom<Appointment>
     public int PetId { get; set; }
     public int GroomerId { get; set; }
     public DateTime AppointmentDate { get; set; }
+    public TimeOnly StartTime { get; set; }
+    public int EstimatedDuration { get; set; }
+    public decimal Price { get; set; }
     public required string Status { get; set; }
     public required string Notes { get; set; }
     public DateTime CreatedAt { get; set; }

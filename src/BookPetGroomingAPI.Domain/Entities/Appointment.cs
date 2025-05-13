@@ -26,8 +26,8 @@ namespace BookPetGroomingAPI.Domain.Entities
         [Column("start_time", TypeName = "time")]
         public TimeOnly StartTime { get; private set; }
 
-        [Column("estimated_duration", TypeName = "time")]
-        public TimeSpan EstimatedDuration { get; private set; }
+        [Column("estimated_duration")]
+        public int EstimatedDuration { get; private set; }
         public string Status { get; private set; }
         public decimal Price { get; private set; }
         public string Notes { get; private set; }

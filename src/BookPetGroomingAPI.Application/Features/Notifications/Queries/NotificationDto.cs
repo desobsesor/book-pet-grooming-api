@@ -7,8 +7,8 @@ namespace BookPetGroomingAPI.Application.Features.Notifications.Queries;
 public class NotificationDto : IMapFrom<Notification>
 {
     public int NotificationId { get; set; }
-    public int? CustomerId { get; set; }
-    public int? GroomerId { get; set; }
+    public int? AppointmentId { get; set; }
+    public string RecipientType { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
     public bool IsRead { get; set; }
     public DateTime CreatedAt { get; set; }

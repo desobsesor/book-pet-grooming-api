@@ -45,7 +45,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // PetCategory entity configuration
         modelBuilder.Entity<PetCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId);
+            entity.HasKey(e => e.PetCategoryId);
             entity.Property(e => e.Name).HasMaxLength(100).IsRequired();
             entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.CreatedAt).IsRequired();
@@ -93,7 +93,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasKey(e => e.PetId);
             entity.Property(e => e.Name).HasMaxLength(100).IsRequired();
             entity.Property(e => e.DateOfBirth).IsRequired();
-            entity.Property(e => e.Gender).HasMaxLength(10);
+            entity.Property(e => e.Gender).HasMaxLength(15);
+            entity.Property(e => e.Weight).HasPrecision(10, 2);
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
             entity.HasOne(e => e.Owner)
@@ -122,6 +123,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.Notes).HasMaxLength(500);
             entity.Property(e => e.StartTime).IsRequired();
+            entity.Property(e => e.EstimatedDuration).IsRequired();
             entity.Property(e => e.Price).HasPrecision(10, 2);
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
@@ -143,14 +145,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.Message).HasMaxLength(500).IsRequired();
             entity.Property(e => e.IsRead).IsRequired();
             entity.Property(e => e.CreatedAt).IsRequired();
-            entity.Property(e => e.ReadAt);
-            entity.HasOne(e => e.Customer)
+            entity.Property(e => e.UpdatedAt);
+            entity.HasOne(e => e.Appointment)
                   .WithMany()
-                  .HasForeignKey(e => e.CustomerId)
-                  .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Groomer)
-                  .WithMany()
-                  .HasForeignKey(e => e.GroomerId)
+                  .HasForeignKey(e => e.AppointmentId)
                   .OnDelete(DeleteBehavior.SetNull);
         });
     }
