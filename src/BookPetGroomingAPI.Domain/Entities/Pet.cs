@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookPetGroomingAPI.Domain.Entities
 {
     /// <summary>
@@ -5,14 +8,29 @@ namespace BookPetGroomingAPI.Domain.Entities
     /// </summary>
     public class Pet
     {
+        [Key]
+        [Column("pet_id")]
         public int PetId { get; private set; }
         public string Name { get; private set; }
+        public decimal Weight { get; private set; }
+
+        [Column("date_of_birth")]
         public DateTime DateOfBirth { get; private set; }
         public string Gender { get; private set; }
+
+        [Column("customer_id")]
         public int CustomerId { get; private set; }
+
+        [Column("breed_id")]
         public int BreedId { get; private set; }
+
+        [Column("category_id")]
         public int CategoryId { get; private set; }
+
+        [Column("created_at")]
         public DateTime CreatedAt { get; private set; }
+
+        [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
 
         // Navigation properties
@@ -23,7 +41,7 @@ namespace BookPetGroomingAPI.Domain.Entities
 
         private Pet() { }
 
-        public Pet(string name, DateTime dateOfBirth, string gender, int customerId, int breedId, int categoryId)
+        public Pet(string name, decimal weight, DateTime dateOfBirth, string gender, int customerId, int breedId, int categoryId)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name cannot be empty", nameof(name));
@@ -31,6 +49,7 @@ namespace BookPetGroomingAPI.Domain.Entities
                 throw new ArgumentException("Gender cannot be empty", nameof(gender));
             Name = name;
             DateOfBirth = dateOfBirth;
+            Weight = weight;
             Gender = gender;
             CustomerId = customerId;
             BreedId = breedId;

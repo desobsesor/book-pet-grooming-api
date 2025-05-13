@@ -2,10 +2,16 @@ using MediatR;
 
 namespace BookPetGroomingAPI.Application.Features.Pets.Commands
 {
-    public class CreatePetCommand(string name, string breed, int age) : IRequest<int>
+    public class CreatePetCommand(string name, decimal weight, string gender, DateTime dateOfBirth, int customerId, int breedId, int categoryId) : IRequest<int>
     {
         public string Name { get; set; } = name;
-        public string Breed { get; set; } = breed;
-        public int Age { get; set; } = age;
+        public decimal Weight { get; set; } = weight;
+        public string Gender { get; set; } = gender;
+        public DateTime DateOfBirth { get; set; } = dateOfBirth;
+        public int BreedId { get; set; } = breedId;
+        public int CategoryId { get; set; } = categoryId;
+        public int CustomerId { get; set; } = customerId;
+
+
     }
 }

@@ -80,6 +80,8 @@ CREATE TABLE pets (
     category_id INT NOT NULL REFERENCES pet_categories(category_id),
     weight DECIMAL(5,2) NOT NULL, -- in kg
     date_of_birth DATE,
+    gender NVARCHAR(15),
+    allergies NVARCHAR(MAX),
     notes NVARCHAR(MAX),
     created_at DATETIME2 DEFAULT GETDATE(),
     updated_at DATETIME2 DEFAULT GETDATE()
