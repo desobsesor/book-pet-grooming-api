@@ -1,10 +1,19 @@
 using MediatR;
 
-namespace BookPetGroomingAPI.Application.Features.Groomers.Commands
+namespace BookPetGroomingAPI.Application.Features.Groomers.Commands;
+
+/// <summary>
+/// Command to create a new groomer in the system
+/// </summary>
+public record CreateGroomerCommand(string Name, string Specialization) : IRequest<int>
 {
-    public class CreateGroomerCommand(string name, string specialization) : IRequest<int>
-    {
-        public string Name { get; set; } = name;
-        public string Specialization { get; set; } = specialization;
-    }
+    /// <summary>
+    /// Gets the name of the groomer
+    /// </summary>
+    public string Name { get; } = Name;
+
+    /// <summary>
+    /// Gets the specialization of the groomer
+    /// </summary>
+    public string Specialization { get; } = Specialization;
 }

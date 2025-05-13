@@ -6,24 +6,54 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6ED01130-9C9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8A1F7E56-5A0F-4397-A574-62E687D7CCB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.API", "src\BookPetGroomingAPI.API\BookPetGroomingAPI.API.csproj", "{D5E0C832-1C9E-4407-8D5C-CE756D67B661}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.API", "src\BookPetGroomingAPI.API\BookPetGroomingAPI.API.csproj", "{D5E0C832-1C9E-4407-8D5C-CE756D67B661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.Application", "src\BookPetGroomingAPI.Application\BookPetGroomingAPI.Application.csproj", "{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.Application", "src\BookPetGroomingAPI.Application\BookPetGroomingAPI.Application.csproj", "{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.Domain", "src\BookPetGroomingAPI.Domain\BookPetGroomingAPI.Domain.csproj", "{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.Domain", "src\BookPetGroomingAPI.Domain\BookPetGroomingAPI.Domain.csproj", "{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.Infrastructure", "src\BookPetGroomingAPI.Infrastructure\BookPetGroomingAPI.Infrastructure.csproj", "{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.Infrastructure", "src\BookPetGroomingAPI.Infrastructure\BookPetGroomingAPI.Infrastructure.csproj", "{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.Shared", "src\BookPetGroomingAPI.Shared\BookPetGroomingAPI.Shared.csproj", "{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.Shared", "src\BookPetGroomingAPI.Shared\BookPetGroomingAPI.Shared.csproj", "{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.UnitTests", "tests\BookPetGroomingAPI.UnitTests\BookPetGroomingAPI.UnitTests.csproj", "{C8F95D83-F167-4662-8879-CDD7EFD0E13E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.UnitTests", "tests\BookPetGroomingAPI.UnitTests\BookPetGroomingAPI.UnitTests.csproj", "{C8F95D83-F167-4662-8879-CDD7EFD0E13E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookPetGroomingAPI.IntegrationTests", "tests\BookPetGroomingAPI.IntegrationTests\BookPetGroomingAPI.IntegrationTests.csproj", "{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookPetGroomingAPI.IntegrationTests", "tests\BookPetGroomingAPI.IntegrationTests\BookPetGroomingAPI.IntegrationTests.csproj", "{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5E0C832-1C9E-4407-8D5C-CE756D67B661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5E0C832-1C9E-4407-8D5C-CE756D67B661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5E0C832-1C9E-4407-8D5C-CE756D67B661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5E0C832-1C9E-4407-8D5C-CE756D67B661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E1C3A6-6A7F-4D5F-A2F3-4E3B92C935D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D7F8F7-9E10-4E50-BA3C-89FCF5C9DAC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D9D0B69-5760-4C09-9A4E-941B2E3E4A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D7A757-E535-4822-9728-9DCF9D5F5DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F95D83-F167-4662-8879-CDD7EFD0E13E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F95D83-F167-4662-8879-CDD7EFD0E13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F95D83-F167-4662-8879-CDD7EFD0E13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F95D83-F167-4662-8879-CDD7EFD0E13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,5 +66,8 @@ Global
 		{B7D7A757-E535-4822-9728-9DCF9D5F5DEF} = {6ED01130-9C95-43A9-9CFA-19F5A8C979A7}
 		{C8F95D83-F167-4662-8879-CDD7EFD0E13E} = {8A1F7E56-5A0F-4397-A574-62E687D7CCB3}
 		{D6D5202E-CE98-4A8A-A717-9412C0D6A1A5} = {8A1F7E56-5A0F-4397-A574-62E687D7CCB3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59886D90-3507-4F36-A5E7-8BF0CE269874}
 	EndGlobalSection
 EndGlobal

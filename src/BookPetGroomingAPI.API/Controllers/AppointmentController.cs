@@ -5,11 +5,8 @@ using BookPetGroomingAPI.Application.Features.Appointments.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class AppointmentController : ApiControllerBase
+public class AppointmentController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public AppointmentController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all appointments

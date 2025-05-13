@@ -5,11 +5,8 @@ using BookPetGroomingAPI.Application.Features.PetCategories.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class PetCategoryController : ApiControllerBase
+public class PetCategoryController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public PetCategoryController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all pet categories

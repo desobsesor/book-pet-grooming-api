@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using BookPetGroomingAPI.API.Controllers;
+using BookPetGroomingAPI.Application.Features.Products.Commands.CreateProduct;
+using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
+using BookPetGroomingAPI.Application.Features.Products.Queries.GetProducts;
 using FluentAssertions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
-using BookPetGroomingAPI.Application.Features.Products.Commands.CreateProduct;
-using BookPetGroomingAPI.Application.Features.Products.Queries.GetProducts;
-using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
-using BookPetGroomingAPI.Domain.Entities;
-using BookPetGroomingAPI.API.Controllers;
-using MediatR;
 
 namespace BookPetGroomingAPI.UnitTests.Controllers
 {

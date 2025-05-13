@@ -5,11 +5,8 @@ using BookPetGroomingAPI.Application.Features.Groomers.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-public class GroomerController : ApiControllerBase
+public class GroomerController(IMediator mediator) : ApiControllerBase(mediator)
 {
-    public GroomerController(IMediator mediator) : base(mediator)
-    {
-    }
 
     /// <summary>
     /// Retrieves all groomers

@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
-using BookPetGroomingAPI.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookPetGroomingAPI.Infrastructure.Persistence.Repositories;
 

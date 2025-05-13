@@ -1,7 +1,6 @@
+using BookPetGroomingAPI.Application.Common.Exceptions;
 using System.Net;
 using System.Text.Json;
-using BookPetGroomingAPI.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Http;
 
 namespace BookPetGroomingAPI.API.Middlewares;
 

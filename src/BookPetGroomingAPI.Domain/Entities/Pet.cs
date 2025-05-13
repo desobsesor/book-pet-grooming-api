@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace BookPetGroomingAPI.Domain.Entities
 {
     /// <summary>

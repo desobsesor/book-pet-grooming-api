@@ -1,10 +1,9 @@
 using AutoMapper;
-using MediatR;
 using BookPetGroomingAPI.Application.Common.Exceptions;
-using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
 using BookPetGroomingAPI.Application.Features.Products.Queries.GetProducts;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
+using MediatR;
 
 namespace BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
 
