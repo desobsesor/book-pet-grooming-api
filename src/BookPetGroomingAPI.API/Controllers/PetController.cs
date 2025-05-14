@@ -56,4 +56,20 @@ public class PetController : ApiControllerBase
         var pet = await Mediator(query);
         return Ok(pet);
     }
+
+    /// <summary>
+    /// Retrieves all pets for a specific customer
+    /// </summary>
+    /// <param name="customerId">Customer ID</param>
+    /// <returns>List of pets</returns>
+    [HttpGet("customer/{customerId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<List<PetDto>>> GetPetsByCustomerId(int customerId)
+    {
+        var query = new GetPetsByCustomerIdQuery(customerId);
+        var pets = await Mediator(query);
+        return Ok(pets);
+    }
+
 }

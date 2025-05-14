@@ -32,7 +32,14 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             // Arrange
             var productId = 10;
             var query = new GetProductByIdQuery(productId);
-            var product = new ProductDto { Id = productId, Name = "Test Product" };
+            var product = new ProductDto 
+            {
+                Id = productId, 
+                Name = "Test Product",
+                Description = "Test Product Description",
+                Price = 150,
+                Stock = 5
+            };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetProductByIdQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(product);
 
@@ -52,8 +59,8 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             // Arrange
             var products = new List<ProductDto>
             {
-                new() { Id = 1, Name = "Producto 1", Price = 100 },
-                new() { Id = 2, Name = "Producto 2", Price = 200 }
+                new() { Id = 1, Name = "Test Product 1", Price = 100 },
+                new() { Id = 2, Name = "Test Product 2", Price = 200 }
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetProductsQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(products);
@@ -74,8 +81,8 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             // Arrange
             var command = new CreateProductCommand
             {
-                Name = "New Product",
-                Description = "Description of product",
+                Name = "New Test Product",
+                Description = "Description of test product",
                 Price = 150,
                 Stock = 10
             };
@@ -93,6 +100,45 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             createdAtActionResult!.ActionName.Should().Be(nameof(ProductsController.GetProductById));
             createdAtActionResult.RouteValues.Should().ContainKey("id").WhoseValue.Should().Be(productId);
             createdAtActionResult.Value.Should().Be(productId);
+        }
+
+        [Fact]
+        public async Task GetProductById_WithInvalidId_ReturnsNotFound()
+        {
+            // Arrange
+            var productId = 999;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetProductByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((ProductDto)null);
+
+            // Act
+            var result = await _controller.GetProductById(productId);
+
+            // Assert
+            result.Result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task CreateProduct_WhenExceptionOccurs_ReturnsBadRequest()
+        {
+            // Arrange
+            var command = new CreateProductCommand
+            {
+                Name = "Test Product Exception",
+                Description = "Test Description",
+                Price = 100,
+                Stock = 5
+            };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateProductCommand>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.CreateProduct(command);
+
+            // Assert
+            result.Result.Should().BeOfType<BadRequestObjectResult>();
+            var badRequestResult = result.Result as BadRequestObjectResult;
+            badRequestResult.Should().NotBeNull();
+            badRequestResult!.Value.Should().Be("Error creating product: Test exception");
         }
     }
 }
