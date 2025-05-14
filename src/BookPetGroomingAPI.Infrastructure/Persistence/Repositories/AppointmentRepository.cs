@@ -56,4 +56,32 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
         return await _context.Appointments
             .AnyAsync(a => a.PetId == petId && a.AppointmentDate == appointmentDate);
     }
+
+    public async Task<IEnumerable<Appointment>> GetByGroomerIdAsync(int groomerId)
+    {
+        return await _context.Appointments
+            .Where(p => p.GroomerId == groomerId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Appointment>> GetByPetIdAsync(int petId)
+    {
+        return await _context.Appointments
+            .Where(p => p.PetId == petId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Appointment>> GetByAppointmentDateAsync()
+    {
+        return await _context.Appointments
+            .Where(p => p.AppointmentDate == DateTime.UtcNow)  
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Appointment>> GetByStatusAsync(string status)
+    {
+        return await _context.Appointments
+            .Where(p => p.Status == status)
+            .ToListAsync();
+    }
 }

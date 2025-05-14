@@ -32,11 +32,11 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             var customer = new CustomerDto
             {
                 CustomerId = customerId,
-                FirstName = "Yovany",
-                LastName = "Suarez Silva",
-                Email = "yovanysuarezsilva@gmail.com",
-                Phone = "PHONE",
-                Address = "ADDRESS",
+                FirstName = "Test",
+                LastName = "Customer",
+                Email = "test.customer@example.com",
+                Phone = "555-123-4567",
+                Address = "123 Test Street",
                 PreferredGroomerId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
@@ -60,8 +60,8 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             // Arrange
             var customers = new List<CustomerDto>
             {
-                new() { CustomerId = 1, FirstName = "Test Customer 1", LastName = "Test Customer 1", Email = "EMAIL1", Phone = "PHONE", Address = "ADDRESS" },
-                new() { CustomerId = 2, FirstName = "Test Customer 2", LastName = "Test Customer 2", Email = "EMAIL2", Phone = "PHONE", Address = "ADDRESS" }
+                new() { CustomerId = 1, FirstName = "Test", LastName = "Customer 1", Email = "test1@example.com", Phone = "555-111-1111", Address = "111 Test Avenue" },
+                new() { CustomerId = 2, FirstName = "Test", LastName = "Customer 2", Email = "test2@example.com", Phone = "555-222-2222", Address = "222 Test Boulevard" }
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetCustomersQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(customers);
@@ -81,11 +81,11 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
         {
             // Arrange
             var command = new CreateCustomerCommand(
-                firstName: "Yovany",
-                lastName: "Suarez Silva",
-                email: "yovanysuarezsilva@gmail.com",
-                phone: "PHONE",
-                address: "ADDRESS"
+                firstName: "New",
+                lastName: "Test Customer",
+                email: "new.test@example.com",
+                phone: "555-333-4444",
+                address: "333 Test Drive"
             );
 
             var customerId = 1;
@@ -102,6 +102,45 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
             createdAtActionResult!.ActionName.Should().Be(nameof(CustomerController.GetCustomerById));
             createdAtActionResult.RouteValues.Should().ContainKey("id").WhoseValue.Should().Be(customerId);
             createdAtActionResult.Value.Should().Be(customerId);
+        }
+
+        [Fact]
+        public async Task GetCustomerById_WithInvalidId_ReturnsNotFound()
+        {
+            // Arrange
+            var customerId = 999;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetCustomerByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((CustomerDto)null);
+
+            // Act
+            var result = await _controller.GetCustomerById(customerId);
+
+            // Assert
+            result.Result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task CreateCustomer_WhenExceptionOccurs_ReturnsBadRequest()
+        {
+            // Arrange
+            var command = new CreateCustomerCommand(
+                firstName: "Exception",
+                lastName: "Test Customer",
+                email: "exception.test@example.com",
+                phone: "555-999-9999",
+                address: "999 Exception Avenue"
+            );
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateCustomerCommand>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.CreateCustomer(command);
+
+            // Assert
+            result.Result.Should().BeOfType<BadRequestObjectResult>();
+            var badRequestResult = result.Result as BadRequestObjectResult;
+            badRequestResult.Should().NotBeNull();
+            badRequestResult!.Value.Should().Be("Error creating customer: Test exception");
         }
     }
 }

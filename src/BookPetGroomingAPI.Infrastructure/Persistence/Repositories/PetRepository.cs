@@ -56,4 +56,12 @@ public class PetRepository(ApplicationDbContext context) : IPetRepository
         return await _context.Pets
             .AnyAsync(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && p.CustomerId == customerId);
     }
+
+    public async Task<IEnumerable<Pet>> GetByCustomerIdAsync(int customerId)
+    {
+        return await _context.Pets
+            .Where(p => p.CustomerId == customerId)
+            .ToListAsync();
+    }
+
 }
