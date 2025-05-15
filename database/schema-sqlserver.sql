@@ -20,13 +20,42 @@ IF OBJECT_ID('pet_categories', 'U') IS NOT NULL DROP TABLE pet_categories;
 IF OBJECT_ID('breeds', 'U') IS NOT NULL DROP TABLE breeds;
 IF OBJECT_ID('customers', 'U') IS NOT NULL DROP TABLE customers;
 IF OBJECT_ID('groomers', 'U') IS NOT NULL DROP TABLE groomers;
+IF OBJECT_ID('sessions', 'U') IS NOT NULL DROP TABLE sessions;
+IF OBJECT_ID('users', 'U') IS NOT NULL DROP TABLE users;
 GO
 
 -- Create tables
 
+-- Users table
+CREATE TABLE users (
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
+    username NVARCHAR(50) NOT NULL UNIQUE,
+    email NVARCHAR(100) NOT NULL UNIQUE,
+    password_hash NVARCHAR(255) NOT NULL,
+    role NVARCHAR(20) NOT NULL,
+    last_login DATETIME2,
+    is_active BIT DEFAULT 1,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    updated_at DATETIME2 DEFAULT GETDATE(),
+    CONSTRAINT chk_role CHECK (role IN ('admin', 'groomer', 'customer'))
+);
+
+-- Sessions table
+CREATE TABLE sessions (
+    session_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id),
+    token NVARCHAR(255) NOT NULL UNIQUE,
+    ip_address NVARCHAR(50),
+    user_agent NVARCHAR(255),
+    expires_at DATETIME2 NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    updated_at DATETIME2 DEFAULT GETDATE()
+);
+
 -- Groomers table
 CREATE TABLE groomers (
     groomer_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
     first_name NVARCHAR(50) NOT NULL,
     last_name NVARCHAR(50) NOT NULL,
     email NVARCHAR(100) NOT NULL UNIQUE,
@@ -41,6 +70,7 @@ CREATE TABLE groomers (
 -- Customers table
 CREATE TABLE customers (
     customer_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
     first_name NVARCHAR(50) NOT NULL,
     last_name NVARCHAR(50) NOT NULL,
     email NVARCHAR(100) NOT NULL UNIQUE,
@@ -92,6 +122,7 @@ CREATE TABLE appointments (
     appointment_id INT IDENTITY(1,1) PRIMARY KEY,
     pet_id INT NOT NULL REFERENCES pets(pet_id),
     groomer_id INT REFERENCES groomers(groomer_id),
+    created_by_user_id INT NOT NULL REFERENCES users(user_id),
     appointment_date DATE NOT NULL,
     start_time TIME NOT NULL,
     estimated_duration INT NOT NULL, -- in minutes
@@ -121,7 +152,12 @@ CREATE INDEX idx_pets_customer_id ON pets(customer_id);
 CREATE INDEX idx_appointments_pet_id ON appointments(pet_id);
 CREATE INDEX idx_appointments_groomer_id ON appointments(groomer_id);
 CREATE INDEX idx_appointments_status ON appointments(status);
+CREATE INDEX idx_appointments_created_by_user_id ON appointments(created_by_user_id);
 CREATE INDEX idx_notifications_appointment_id ON notifications(appointment_id);
+CREATE INDEX idx_groomers_user_id ON groomers(user_id);
+CREATE INDEX idx_customers_user_id ON customers(user_id);
+CREATE INDEX idx_sessions_user_id ON sessions(user_id);
+CREATE INDEX idx_sessions_token ON sessions(token);
 GO
 
 -- Insert initial data for pet categories
@@ -151,7 +187,10 @@ SELECT
     c.phone AS customer_phone,
     g.groomer_id,
     g.first_name AS groomer_first_name,
-    g.last_name AS groomer_last_name
+    g.last_name AS groomer_last_name,
+    a.created_by_user_id,
+    u.username AS created_by_username,
+    u.role AS created_by_role
 FROM 
     appointments a
 JOIN 
@@ -163,7 +202,9 @@ JOIN
 JOIN 
     customers c ON p.customer_id = c.customer_id
 LEFT JOIN 
-    groomers g ON a.groomer_id = g.groomer_id;
+    groomers g ON a.groomer_id = g.groomer_id
+JOIN 
+    users u ON a.created_by_user_id = u.user_id;
 GO
 
 -- Create function to calculate grooming price
