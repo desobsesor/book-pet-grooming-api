@@ -8,13 +8,14 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using BookPetGroomingAPI.API.Filters;
+using BookPetGroomingAPI.API.Configuration;
 
 Console.WriteLine("Starting Program.cs execution..."); // Debug log
 Console.WriteLine("Creating WebApplication builder..."); // Debug log
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar Serilog
+// Configure Serilog
 var logsDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
 if (!Directory.Exists(logsDirectory))
 {
@@ -55,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // Configurar Swagger para usar JWT
+    // Configure Swagger by use JWT 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -112,8 +113,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configurar autenticación JWT
+// Configure JWT Autentication 
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+// Configure rate limiting
+builder.Services.AddRateLimiting(builder.Configuration);
 
 var app = builder.Build();
 
@@ -134,6 +138,9 @@ app.UseResponseCompression();
 
 // Global error handling middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+// Apply rate limiting
+app.UseRateLimiting();
 
 // Configure CORS
 app.UseCors("AllowAll");

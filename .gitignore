@@ -9,6 +9,8 @@
 *.userosscache
 *.sln.docstates
 src/BookPetGroomingAPI.API/Logs/
+docs
+examples
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
