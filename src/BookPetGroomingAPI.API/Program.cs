@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Reflection;
+using BookPetGroomingAPI.API.Extensions;
 using BookPetGroomingAPI.API.Middlewares;
 using BookPetGroomingAPI.Application;
 using BookPetGroomingAPI.Infrastructure;
@@ -54,6 +55,31 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
+    // Configurar Swagger para usar JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+
     // Including XML comments for API documentation
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -85,6 +111,9 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+// Configurar autenticación JWT
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
