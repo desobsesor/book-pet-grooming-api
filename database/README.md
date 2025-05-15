@@ -51,13 +51,16 @@ Appointments 1 --- N Notifications
 - Indexes to optimize the performance of frequent queries
 
 ## Usage
+To use this database structure, you need to have SQL Server installed on your computer. You can download it from the official website
 
 To implement this database structure, run the `schema-sqlserver.sql` file in your SQL Server instance:
-
 ```sql
 sqlcmd -S server_name -d database_name -i schema-sqlserver.sql
 ```
-
+To insert sample data, run the `sample-data.sql` file:
+```sql
+sqlcmd -S server_name -d database_name -i sample-data.sql
+```
 Where:
 - `server_name` is your SQL Server instance name
 - `database_name` is the name of your database
