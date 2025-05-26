@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/users")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/users")]
 public class UserController : ApiControllerBase
 {
     private readonly ILogger<UserController> _logger;

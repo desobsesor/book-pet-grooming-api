@@ -6,7 +6,8 @@ using BookPetGroomingAPI.Application.Features.Products.Queries.GetProductById;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/products")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/products")]
 public class ProductsController : ApiControllerBase
 {
     private readonly ILogger<ProductsController> _logger;

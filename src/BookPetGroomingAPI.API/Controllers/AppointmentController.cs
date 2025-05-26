@@ -1,12 +1,13 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using BookPetGroomingAPI.Application.Features.Appointments.Commands;
 using BookPetGroomingAPI.Application.Features.Appointments.Queries;
 using BookPetGroomingAPI.Application.Features.Pets.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/appointments")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/appointments")]
 public class AppointmentController : ApiControllerBase
 {
     private readonly ILogger<AppointmentController> _logger;
@@ -124,7 +125,6 @@ public class AppointmentController : ApiControllerBase
         var appointments = await Mediator(query);
         return Ok(appointments);
     }
-
 
     /// <summary>
     /// Retrieves all appointments for a specific groomer

@@ -8,7 +8,8 @@ namespace BookPetGroomingAPI.API.Controllers;
 /// <summary>
 /// Controller to manage user authentication
 /// </summary>
-[Route("api/auth")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/auth")]
 public class AuthController : ApiControllerBase
 {
     private readonly ILogger<AuthController> _logger;
