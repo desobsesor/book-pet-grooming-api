@@ -5,7 +5,8 @@ using BookPetGroomingAPI.Application.Features.PetCategories.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/pet-categories")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/pet-categories")]
 public class PetCategoryController : ApiControllerBase
 {
     private readonly ILogger<PetCategoryController> _logger;

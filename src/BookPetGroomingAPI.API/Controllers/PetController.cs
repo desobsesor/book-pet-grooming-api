@@ -5,7 +5,8 @@ using BookPetGroomingAPI.Application.Features.Pets.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/pets")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/pets")]
 public class PetController : ApiControllerBase
 {
     private readonly ILogger<PetController> _logger;
