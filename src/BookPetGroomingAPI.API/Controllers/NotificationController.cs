@@ -5,7 +5,8 @@ using BookPetGroomingAPI.Application.Features.Notifications.Queries;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/notifications")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/notifications")]
 public class NotificationController : ApiControllerBase
 {
     private readonly ILogger<NotificationController> _logger;

@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookPetGroomingAPI.API.Controllers;
 
-[Route("api/sessions")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/sessions")]
 public class SessionController : ApiControllerBase
 {
     private readonly ILogger<SessionController> _logger;
