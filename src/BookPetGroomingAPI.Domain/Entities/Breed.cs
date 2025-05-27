@@ -1,16 +1,25 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookPetGroomingAPI.Domain.Entities
 {
     /// <summary>
     /// Represents a breed for pets (e.g., Labrador, Persian).
     /// </summary>
+    [Table("breeds", Schema = "dbo")]
     public class Breed
     {
+        [Column("breed_id")]
         public int BreedId { get; private set; }
         public string Name { get; private set; } = string.Empty;
         public string Species { get; private set; } = string.Empty;
+        [Column("coat_type")]
         public string CoatType { get; private set; } = string.Empty;
+        [Column("grooming_difficulty")]
         public int GroomingDifficulty { get; private set; }
+
+        [Column("created_at")]
         public DateTime CreatedAt { get; private set; }
+        [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
 
         private Breed() { }

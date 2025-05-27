@@ -12,7 +12,7 @@ public interface IAppointmentRepository
     Task<IEnumerable<Appointment>> GetActiveAsync();
     Task<IEnumerable<Appointment>> GetByGroomerIdAsync(int groomerId);
     Task<IEnumerable<Appointment>> GetByPetIdAsync(int petId);
-    Task<IEnumerable<Appointment>> GetByAppointmentDateAsync();
+    Task<IEnumerable<Appointment>> GetByAppointmentDateAsync(DateTime appointmentDate);
     Task<IEnumerable<Appointment>> GetByStatusAsync(string status);
     Task<int> AddAsync(Appointment appointment);
     Task UpdateAsync(Appointment appointment);

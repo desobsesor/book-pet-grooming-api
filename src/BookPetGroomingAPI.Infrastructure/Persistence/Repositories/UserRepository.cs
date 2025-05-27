@@ -39,8 +39,9 @@ namespace BookPetGroomingAPI.Infrastructure.Persistence.Repositories
         /// <returns>Collection of active users</returns>
         public async Task<IEnumerable<User>> GetActiveAsync()
         {
-            return await context.Users
+            return (IEnumerable<User>)await context.Users
                 .Where(u => u.IsActive)
+                .Select(u => new { u.UserId, u.Username })
                 .ToListAsync();
         }
 
@@ -51,9 +52,10 @@ namespace BookPetGroomingAPI.Infrastructure.Persistence.Repositories
         /// <returns>ID of the newly created user</returns>
         public async Task<int> AddAsync(User user)
         {
-            await context.Users.AddAsync(user);
+            var _ = context.Users.AddAsync(user);
             await context.SaveChangesAsync();
-            return user.UserId;
+
+            return context.Users.Max(u => u.UserId);
         }
 
         /// <summary>

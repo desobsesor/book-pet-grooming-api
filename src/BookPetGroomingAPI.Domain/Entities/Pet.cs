@@ -6,6 +6,7 @@ namespace BookPetGroomingAPI.Domain.Entities
     /// <summary>
     /// Represents a pet owned by a customer.
     /// </summary>
+    [Table("pets", Schema = "dbo")]
     public class Pet
     {
         [Key]
@@ -13,35 +14,30 @@ namespace BookPetGroomingAPI.Domain.Entities
         public int PetId { get; private set; }
         public string Name { get; private set; }
         public decimal Weight { get; private set; }
-
         [Column("date_of_birth")]
         public DateTime DateOfBirth { get; private set; }
         public string Gender { get; private set; }
-
         [Column("customer_id")]
         public int CustomerId { get; private set; }
-
         [Column("breed_id")]
         public int BreedId { get; private set; }
-
         [Column("category_id")]
         public int CategoryId { get; private set; }
-
         [Column("created_at")]
         public DateTime CreatedAt { get; private set; }
-
         [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
-
+        public string Allergies { get; private set; }
+        public string Notes { get; private set; }
         // Navigation properties
-        public Customer? Owner { get; private set; }
+        public Customer? Customer { get; private set; }
         public Breed? Breed { get; private set; }
         public PetCategory? Category { get; private set; }
         public ICollection<Appointment>? Appointments { get; private set; }
 
         private Pet() { }
 
-        public Pet(string name, decimal weight, DateTime dateOfBirth, string gender, int customerId, int breedId, int categoryId)
+        public Pet(string name, decimal weight, DateTime dateOfBirth, string gender, int customerId, int breedId, int categoryId, string allergies, string notes)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name cannot be empty", nameof(name));
@@ -51,6 +47,9 @@ namespace BookPetGroomingAPI.Domain.Entities
             DateOfBirth = dateOfBirth;
             Weight = weight;
             Gender = gender;
+            Weight = weight;
+            Allergies = allergies;
+            Notes = notes;
             CustomerId = customerId;
             BreedId = breedId;
             CategoryId = categoryId;
@@ -83,6 +82,11 @@ namespace BookPetGroomingAPI.Domain.Entities
         public void UpdateCategory(int categoryId)
         {
             CategoryId = categoryId;
+            UpdatedAt = DateTime.UtcNow;
+        }
+        public void Deactivate()
+        {
+            Name = null;
             UpdatedAt = DateTime.UtcNow;
         }
     }

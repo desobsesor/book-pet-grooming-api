@@ -8,21 +8,13 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
     /// <summary>
     /// Handler for processing the CreateAppointmentCommand and creating a new appointment
     /// </summary>
-    public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, int>
+    /// <remarks>
+    /// Constructor for CreateAppointmentCommandHandler
+    /// </remarks>
+    /// <param name="appointmentRepository">Repository for appointment operations</param>
+    /// <param name="mapper">Mapping service</param>
+    public class CreateAppointmentCommandHandler(IAppointmentRepository appointmentRepository, IMapper mapper) : IRequestHandler<CreateAppointmentCommand, int>
     {
-        private readonly IAppointmentRepository _appointmentRepository;
-        private readonly IMapper _mapper;
-
-        /// <summary>
-        /// Constructor for CreateAppointmentCommandHandler
-        /// </summary>
-        /// <param name="appointmentRepository">Repository for appointment operations</param>
-        /// <param name="mapper">Mapping service</param>
-        public CreateAppointmentCommandHandler(IAppointmentRepository appointmentRepository, IMapper mapper)
-        {
-            _appointmentRepository = appointmentRepository;
-            _mapper = mapper;
-        }
 
         /// <summary>
         /// Handles the command to create a new appointment
@@ -44,10 +36,10 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
             {
                 // Create a new appointment entity using the domain constructor
                 // This approach respects the domain model's encapsulation and validation
-                var appointment = new Appointment(request.PetId, request.GroomerId, request.AppointmentDate, request.StartTime, request.Status, request.Notes, request.Price);
+                var appointment = new Appointment(request.PetId, request.GroomerId, request.AppointmentDate, request.StartTime, request.Status, request.Notes, request.Price, request.CreatedByUserId);
 
                 // Add the appointment to the repository
-                var appointmentId = await _appointmentRepository.AddAsync(appointment);
+                var appointmentId = await appointmentRepository.AddAsync(appointment);
 
                 return appointmentId;
             }

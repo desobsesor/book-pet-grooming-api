@@ -44,7 +44,7 @@ namespace BookPetGroomingAPI.Application.Features.Pets.Commands
             {
                 // Create a new pet entity using the domain constructor
                 // This approach respects the domain model's encapsulation and validation
-                var pet = new Pet(request.Name, request.Weight, request.DateOfBirth, request.Gender, request.CustomerId, request.BreedId, request.CategoryId);
+                var pet = new Pet(request.Name, request.Weight, request.DateOfBirth, request.Gender, request.CustomerId, request.BreedId, request.CategoryId, request.Allergies, request.Notes);
 
                 // Add the pet to the repository
                 var petId = await _petRepository.AddAsync(pet);

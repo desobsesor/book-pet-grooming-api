@@ -1,6 +1,11 @@
-# Book Pet Grooming API
 
-  <p align="center">API services.</p>
+# Book Pet Grooming API 🐾
+
+<p align="center">
+  <img src="src/BookPetGroomingAPI.Shared/Assets/Images/pet-grooming.png" alt="Logo" width="180" height="180">
+</p>
+
+  <p align="center">Technologies used.</p>
     <p align="center">
 <a href="https://dotnet.microsoft.com/en-us/" target="_blank"><img src="https://img.shields.io/badge/.NET-8.0-blueviolet" alt=".NET 8.0"></a>
 <a href="https://learn.microsoft.com/en-us/aspnet/core/" target="_blank"><img src="https://img.shields.io/badge/ASP.NET%20Core-8.0-blue" alt="ASP.NET Core 8.0"></a>
@@ -20,11 +25,11 @@
 
 Services for scheduling grooming for your pets at your trusted salon.
 
-# Professional .NET Application Structure
+# Professional .NET Application Structure 🏗️
 
 This project implements a layered architecture following the principles of Clean Architecture and Domain-Driven Design (DDD).
 
-## Project Structure
+## Project Structure 🗂️
 
 ```
 Solution 'BookPetGroomingAPI'
@@ -40,24 +45,24 @@ Solution 'BookPetGroomingAPI'
 │   └── BookPetGroomingAPI.FunctionalTests     # Functional Tests
 ```
 
-## Application Layers
+## Application Layers 🧩
 
-### Domain Layer (BookPetGroomingAPI.Domain)
+### Domain Layer (BookPetGroomingAPI.Domain) 🏛️
 Contains business entities, repository interfaces, domain events, and business rules. This layer is independent of any external framework or technology.
 
-### Application Layer (BookPetGroomingAPI.Application)
+### Application Layer (BookPetGroomingAPI.Application) ⚙️
 Contains application logic and orchestration. Implements use cases that coordinate the flow of data to and from domain entities, and directs those entities to use their business rules to achieve the objectives of the use case.
 
-### Infrastructure Layer (BookPetGroomingAPI.Infrastructure)
+### Infrastructure Layer (BookPetGroomingAPI.Infrastructure) 🏗️
 Contains concrete implementations of interfaces defined in the domain and application layers. Includes data access, external services, logging, etc.
 
-### Presentation Layer (BookPetGroomingAPI.API)
+### Presentation Layer (BookPetGroomingAPI.API) 🌐
 Exposes the application's functionality through a REST API. Handles HTTP requests, input validation, and response serialization.
 
-### Shared Components (BookPetGroomingAPI.Shared)
+### Shared Components (BookPetGroomingAPI.Shared) 🔗
 Contains components, utilities, and models that are shared across multiple layers.
 
-## Implemented Patterns
+## Implemented Patterns 🧩
 
 - **Repository Pattern**: To abstract data access
 - **Mediator Pattern (CQRS)**: To separate read and write operations
@@ -66,7 +71,7 @@ Contains components, utilities, and models that are shared across multiple layer
 - **Options Pattern**: To manage configuration
 - **Specification Pattern**: For complex queries
 
-## Technologies Used
+## Technologies Used 💻
 
 - ASP.NET Core 8.0
 - Entity Framework Core

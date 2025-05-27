@@ -110,6 +110,44 @@ public class NotificationController : ApiControllerBase
     }
 
     /// <summary>
+    /// Retrieves notifications by user Appointment ID
+    /// </summary>
+    /// <param name="appointmentId">User Appointment ID</param>
+    /// <returns>List of notifications</returns>
+    [HttpGet("appointment/{appointmentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<NotificationDto>>> GetNotificationsByAppointmentId(int appointmentId)
+    {
+        try
+        {
+            _logger.LogInformation("Getting notifications for appointment ID: {AppointmentId}", appointmentId);
+
+            var query = new GetNotificationsByAppointmentIdQuery(appointmentId);
+            var notifications = await Mediator(query);
+
+            if (notifications == null || notifications.Count == 0)
+            {
+                _logger.LogWarning("No notifications found for appointment ID: {AppointmentId}", appointmentId);
+                return NotFound();
+            }
+
+            _logger.LogInformation("Successfully retrieved {Count} notifications for appointment ID: {AppointmentId}", notifications.Count, appointmentId);
+            return Ok(notifications);
+        }
+        catch (Exception ex)
+        {
+            var requestId = HttpContext.TraceIdentifier;
+            _logger.LogError(ex, "Error retrieving notifications for appointment ID: {AppointmentId}. RequestId: {RequestId}. Details: {Message}",
+                appointmentId, requestId, ex.Message);
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Server error processing request", requestId, message = "Check logs for more details" });
+        }
+    }
+
+    /// <summary>
     /// Updates an existing notification
     /// </summary>
     /// <param name="command">Notification data to update</param>

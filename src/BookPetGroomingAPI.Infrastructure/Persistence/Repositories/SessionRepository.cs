@@ -7,18 +7,12 @@ namespace BookPetGroomingAPI.Infrastructure.Persistence.Repositories;
 /// <summary>
 /// Repository implementation for Session entity.
 /// </summary>
-public class SessionRepository : ISessionRepository
+/// <remarks>
+/// Constructor for SessionRepository
+/// </remarks>
+/// <param name="context">Database context</param>
+public class SessionRepository(ApplicationDbContext context) : ISessionRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    /// <summary>
-    /// Constructor for SessionRepository
-    /// </summary>
-    /// <param name="context">Database context</param>
-    public SessionRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
 
     /// <summary>
     /// Retrieves a session by its ID
@@ -27,7 +21,9 @@ public class SessionRepository : ISessionRepository
     /// <returns>Session if found, null otherwise</returns>
     public async Task<Session?> GetByIdAsync(int id)
     {
-        return await _context.Sessions.FindAsync(id);
+        return await context.Sessions
+            .Include(s => s.User)
+            .FirstOrDefaultAsync(s => s.SessionId == id);
     }
 
     /// <summary>
@@ -36,7 +32,9 @@ public class SessionRepository : ISessionRepository
     /// <returns>Collection of all sessions</returns>
     public async Task<IEnumerable<Session>> GetAllAsync()
     {
-        return await _context.Sessions.ToListAsync();
+        return await context.Sessions
+        .Include(s => s.User)
+        .ToListAsync();
     }
 
     /// <summary>
@@ -46,7 +44,8 @@ public class SessionRepository : ISessionRepository
     /// <returns>Session if found, null otherwise</returns>
     public async Task<Session?> GetByTokenAsync(string token)
     {
-        return await _context.Sessions
+        return await context.Sessions
+        .Include(s => s.User)
             .FirstOrDefaultAsync(s => s.Token == token);
     }
 
@@ -57,7 +56,8 @@ public class SessionRepository : ISessionRepository
     /// <returns>Collection of sessions for the specified user</returns>
     public async Task<IEnumerable<Session>> GetByUserIdAsync(int userId)
     {
-        return await _context.Sessions
+        return await context.Sessions
+            .Include(s => s.User)
             .Where(s => s.UserId == userId)
             .ToListAsync();
     }
@@ -69,7 +69,7 @@ public class SessionRepository : ISessionRepository
     public async Task<IEnumerable<Session>> GetActiveSessionsAsync()
     {
         var currentTime = DateTime.UtcNow;
-        return await _context.Sessions
+        return await context.Sessions
             .Where(s => s.ExpiresAt > currentTime)
             .ToListAsync();
     }
@@ -81,8 +81,8 @@ public class SessionRepository : ISessionRepository
     /// <returns>ID of the newly created session</returns>
     public async Task<int> AddAsync(Session session)
     {
-        await _context.Sessions.AddAsync(session);
-        await _context.SaveChangesAsync();
+        await context.Sessions.AddAsync(session);
+        await context.SaveChangesAsync();
         return session.SessionId;
     }
 
@@ -92,8 +92,8 @@ public class SessionRepository : ISessionRepository
     /// <param name="session">Session to update</param>
     public async Task UpdateAsync(Session session)
     {
-        _context.Sessions.Update(session);
-        await _context.SaveChangesAsync();
+        context.Sessions.Update(session);
+        await context.SaveChangesAsync();
     }
 
     /// <summary>
@@ -102,11 +102,11 @@ public class SessionRepository : ISessionRepository
     /// <param name="id">Session ID</param>
     public async Task DeleteAsync(int id)
     {
-        var session = await _context.Sessions.FindAsync(id);
+        var session = await context.Sessions.FindAsync(id);
         if (session != null)
         {
-            _context.Sessions.Remove(session);
-            await _context.SaveChangesAsync();
+            context.Sessions.Remove(session);
+            await context.SaveChangesAsync();
         }
     }
 
@@ -116,14 +116,14 @@ public class SessionRepository : ISessionRepository
     public async Task DeleteExpiredSessionsAsync()
     {
         var currentTime = DateTime.UtcNow;
-        var expiredSessions = await _context.Sessions
+        var expiredSessions = await context.Sessions
             .Where(s => s.ExpiresAt <= currentTime)
             .ToListAsync();
 
         if (expiredSessions.Any())
         {
-            _context.Sessions.RemoveRange(expiredSessions);
-            await _context.SaveChangesAsync();
+            context.Sessions.RemoveRange(expiredSessions);
+            await context.SaveChangesAsync();
         }
     }
 }

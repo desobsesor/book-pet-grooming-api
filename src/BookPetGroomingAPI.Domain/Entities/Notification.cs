@@ -6,6 +6,7 @@ namespace BookPetGroomingAPI.Domain.Entities
     /// <summary>
     /// Represents a notification sent to a customer or groomer.
     /// </summary>
+    [Table("notifications", Schema = "dbo")]
     public class Notification
     {
         [Key]
@@ -28,18 +29,20 @@ namespace BookPetGroomingAPI.Domain.Entities
         [Column("updated_at")]
         public DateTime? UpdatedAt { get; private set; }
 
-        // Navigation properties
         public Appointment? Appointment { get; private set; }
 
         private Notification() { }
 
-        public Notification(int? appointmentId, string message)
+        public Notification(int? appointmentId, string message, string recipientType, int isRead)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("The notification message cannot be empty", nameof(message));
             AppointmentId = appointmentId;
             Message = message;
-            IsRead = false;
+            RecipientType = recipientType.ToLower();
+            if (recipientType != "customer" && recipientType != "groomer")
+                throw new ArgumentException("Invalid recipient type. Must be either 'customer' or 'groomer'", nameof(recipientType));
+            IsRead = isRead == 1;
             CreatedAt = DateTime.UtcNow;
         }
 
