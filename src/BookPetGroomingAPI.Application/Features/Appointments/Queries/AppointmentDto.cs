@@ -35,6 +35,8 @@ public class AppointmentDto : IMapFrom<Appointment>
     public DateTime CreatedAt { get; set; }
     [SwaggerSchema(Description = "Date and time when the appointment was last updated.")]
     public DateTime UpdatedAt { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Appointment, AppointmentDto>();

@@ -3,6 +3,7 @@ using BookPetGroomingAPI.Application.Features.Appointments.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using BookPetGroomingAPI.Shared.Common;
 namespace BookPetGroomingAPI.API.Controllers;
 
 [ApiVersion("1.0")]
@@ -23,16 +24,16 @@ public class AppointmentController : ApiControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<AppointmentDto>>> GetAppointments()
+    public async Task<ActionResult<PaginatedList<AppointmentDto>>> GetAppointments([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
             _logger.LogInformation("Getting list of all appointments");
 
-            var query = new GetAppointmentsQuery();
+            var query = new GetAppointmentsQuery { PageNumber = pageNumber, PageSize = pageSize };
             var appointments = await Mediator(query);
 
-            _logger.LogInformation("Successfully retrieved {Count} appointments", appointments.Count);
+            _logger.LogInformation("Successfully retrieved {Count} appointments", appointments.Items.Count);
             return Ok(appointments);
         }
         catch (Exception ex)
@@ -118,9 +119,9 @@ public class AppointmentController : ApiControllerBase
     [HttpGet("groomer/{groomerId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentsByGroomerId(int groomerId)
+    public async Task<ActionResult<PaginatedList<AppointmentDto>>> GetAppointmentsByGroomerId(int groomerId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var query = new GetAppointmentsByGroomerIdQuery(groomerId);
+        var query = new GetAppointmentsByGroomerIdQuery(groomerId, pageNumber, pageSize);
         var appointments = await Mediator(query);
         return Ok(appointments);
     }
