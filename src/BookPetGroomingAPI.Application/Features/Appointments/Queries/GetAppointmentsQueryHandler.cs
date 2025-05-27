@@ -1,4 +1,5 @@
 using AutoMapper;
+using BookPetGroomingAPI.Shared.Common;
 using BookPetGroomingAPI.Domain.Interfaces;
 using MediatR;
 
@@ -12,7 +13,7 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Queries
     /// </remarks>
     /// <param name="appointmentRepository">Repository for appointment operations</param>
     /// <param name="mapper">Mapping service</param>
-    public class GetAppointmentsQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper) : IRequestHandler<GetAppointmentsQuery, List<AppointmentDto>>
+    public class GetAppointmentsQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper) : IRequestHandler<GetAppointmentsQuery, PaginatedList<AppointmentDto>>
     {
 
         /// <summary>
@@ -21,10 +22,16 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Queries
         /// <param name="request">The GetAppointmentsQuery</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of appointment DTOs</returns>
-        public async Task<List<AppointmentDto>> Handle(GetAppointmentsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<AppointmentDto>> Handle(GetAppointmentsQuery request, CancellationToken cancellationToken)
         {
-            var appointments = await appointmentRepository.GetAllAsync();
-            return mapper.Map<List<AppointmentDto>>(appointments);
+            var query = appointmentRepository.GetAllQueryable();
+            var paginatedAppointments = await PaginatedList<AppointmentDto>.CreateAsync(
+                query.Select(a => mapper.Map<AppointmentDto>(a)),
+                request.PageNumber,
+                request.PageSize
+            );
+
+            return paginatedAppointments;
         }
     }
 }

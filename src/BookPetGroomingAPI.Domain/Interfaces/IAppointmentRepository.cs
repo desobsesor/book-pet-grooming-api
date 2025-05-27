@@ -14,6 +14,7 @@ public interface IAppointmentRepository
     Task<IEnumerable<Appointment>> GetByPetIdAsync(int petId);
     Task<IEnumerable<Appointment>> GetByAppointmentDateAsync(DateTime appointmentDate);
     Task<IEnumerable<Appointment>> GetByStatusAsync(string status);
+    IQueryable<Appointment> GetAllQueryable();
     Task<int> AddAsync(Appointment appointment);
     Task UpdateAsync(Appointment appointment);
     Task DeleteAsync(int id);
