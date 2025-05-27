@@ -1,5 +1,6 @@
 using AutoMapper;
 using BookPetGroomingAPI.Application.Common.Mappings;
+using BookPetGroomingAPI.Application.Features.Appointments.Queries;
 using BookPetGroomingAPI.Domain.Entities;
 
 namespace BookPetGroomingAPI.Application.Features.Notifications.Queries;
@@ -13,6 +14,7 @@ public class NotificationDto : IMapFrom<Notification>
     public bool IsRead { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? ReadAt { get; set; }
+    public AppointmentDto Appointment { get; set; } = null!;
 
     public void Mapping(Profile profile)
     {

@@ -32,21 +32,21 @@ namespace BookPetGroomingAPI.Application.Features.Auth.Commands
         /// <returns>Response with JWT token or null if credentials are invalid</returns>
         public async Task<LoginResponse?> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            // Obtener todos los usuarios y buscar el que coincida con el nombre de usuario
+            // Get all users and find the one matching the username
             var users = await userRepository.GetAllAsync();
             var user = users.FirstOrDefault(u => u.Username == request.Username);
 
-            // Verificar si el usuario existe y la contraseña es correcta
+            // Verify if the user exists and the password is correct
             if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
             {
                 return null;
             }
 
-            // Generar token JWT
+            // Generate JWT token
             var token = GenerateJwtToken(user);
             var expiration = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
 
-            // Crear una nueva sesión en la base de datos
+            // Create a new session in the database
             var session = new Session(
                 userId: user.UserId,
                 token: token,
@@ -58,7 +58,7 @@ namespace BookPetGroomingAPI.Application.Features.Auth.Commands
 
             await sessionRepository.AddAsync(session);
 
-            // Devolver la respuesta con el token y los datos del usuario
+            // Return the response with token and user data
             return new LoginResponse
             {
                 Token = token,
@@ -77,10 +77,9 @@ namespace BookPetGroomingAPI.Application.Features.Auth.Commands
         /// <returns>True if the password is correct, false otherwise</returns>
         private bool VerifyPassword(string password, string storedHash)
         {
-            // En un entorno real, aquí se utilizaría BCrypt, Argon2 u otro algoritmo seguro
-            // In a real environment, BCrypt, Argon2, or another secure algorithm would be used here
-            // Para simplificar, asumimos que el hash es la contraseña misma (NO USAR EN PRODUCCIÓN)
+            // In a real environment, BCrypt, Argon2 or another secure algorithm would be used here
             // To simplify, we assume the hash is the password itself (DO NOT USE IN PRODUCTION)
+            // Could be obtained from HttpContext in the controller
             return password == storedHash;
         }
 
@@ -96,10 +95,10 @@ namespace BookPetGroomingAPI.Application.Features.Auth.Commands
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.Role, user.Role)
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

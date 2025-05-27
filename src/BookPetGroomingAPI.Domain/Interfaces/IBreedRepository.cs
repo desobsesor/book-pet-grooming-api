@@ -18,14 +18,14 @@ namespace BookPetGroomingAPI.Domain.Interfaces
         /// </summary>
         /// <param name="id">Breed identifier.</param>
         /// <returns>Breed entity or null.</returns>
-        Task<Breed> GetByIdAsync(int id);
+        Task<Breed?> GetByIdAsync(int id);
 
         /// <summary>
         /// Adds a new breed.
         /// </summary>
         /// <param name="breed">Breed entity.</param>
         /// <returns>Task.</returns>
-        Task AddAsync(Breed breed);
+        Task<int> AddAsync(Breed breed);
 
         /// <summary>
         /// Updates an existing breed.

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BookPetGroomingAPI.Application.Common;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
 using MediatR;
@@ -8,21 +9,13 @@ namespace BookPetGroomingAPI.Application.Features.Customers.Commands
     /// <summary>
     /// Handler for processing the CreateCustomerCommand and creating a new customer
     /// </summary>
-    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, int>
+    /// <remarks>
+    /// Constructor for CreateCustomerCommandHandler
+    /// </remarks>
+    /// <param name="customerRepository">Repository for customer operations</param>
+    /// <param name="mapper">Mapping service</param>
+    public class CreateCustomerCommandHandler(ICustomerRepository customerRepository, IUserRepository userRepository, IMapper mapper) : IRequestHandler<CreateCustomerCommand, int>
     {
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
-
-        /// <summary>
-        /// Constructor for CreateCustomerCommandHandler
-        /// </summary>
-        /// <param name="customerRepository">Repository for customer operations</param>
-        /// <param name="mapper">Mapping service</param>
-        public CreateCustomerCommandHandler(ICustomerRepository customerRepository, IMapper mapper)
-        {
-            _customerRepository = customerRepository;
-            _mapper = mapper;
-        }
 
         /// <summary>
         /// Handles the command to create a new customer
@@ -42,6 +35,23 @@ namespace BookPetGroomingAPI.Application.Features.Customers.Commands
 
             try
             {
+                var username = SecurityUtils.GenerateUniqueUsername(request.FirstName, request.LastName);
+                var existingCustomer = await userRepository.UserExistsAsync(username);
+
+                if (existingCustomer)
+                {
+                    username = SecurityUtils.GenerateUniqueUsername(request.FirstName, request.Email.Split('@')[0]);
+                }
+                // Create a new user entity for the customer
+                var user = new User(
+                    username: username,
+                    email: request.Email,
+                    passwordHash: SecurityUtils.GenerateSecurePassword(),
+                    role: "customer");
+
+                // Add the user to the repository
+                var userId = await userRepository.AddAsync(user);
+
                 // Create a new customer entity using the domain constructor
                 // This approach respects the domain model's encapsulation and validation
                 var customer = new Customer(
@@ -50,10 +60,11 @@ namespace BookPetGroomingAPI.Application.Features.Customers.Commands
                     email: request.Email,
                     phone: request.Phone,
                     address: request.Address,
-                    preferredGroomerId: null);
+                    preferredGroomerId: null,
+                    userId: userId); // Assign the created user ID to the customer
 
                 // Add the customer to the repository
-                var customerId = await _customerRepository.AddAsync(customer);
+                var customerId = await customerRepository.AddAsync(customer);
 
                 return customerId;
             }

@@ -47,9 +47,12 @@ namespace BookPetGroomingAPI.Domain.Entities
         public Groomer? PreferredGroomer { get; private set; }
         public ICollection<Pet>? Pets { get; private set; }
 
+        [Column("user_id")]
+        public int? UserId { get; private set; }
+
         private Customer() { }
 
-        public Customer(string firstName, string? lastName, string? email, string? phone, string? address, int? preferredGroomerId)
+        public Customer(string firstName, string? lastName, string? email, string? phone, string? address, int? preferredGroomerId, int? userId)
         {
             if (string.IsNullOrWhiteSpace(firstName))
                 throw new ArgumentException("First name cannot be empty", nameof(firstName));
@@ -58,6 +61,7 @@ namespace BookPetGroomingAPI.Domain.Entities
             Email = email;
             Phone = phone;
             Address = address;
+            UserId = userId;
             PreferredGroomerId = preferredGroomerId;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;

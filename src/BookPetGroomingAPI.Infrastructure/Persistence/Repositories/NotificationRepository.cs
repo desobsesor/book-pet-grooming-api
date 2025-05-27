@@ -16,15 +16,27 @@ public class NotificationRepository(ApplicationDbContext context) : INotificatio
         return await _context.Notifications.ToListAsync();
     }
 
+    public async Task<IEnumerable<Notification>> GetByAppointmentIdAsync(int appointmentId)
+    {
+        return await _context.Notifications
+            .Include(a => a.Appointment)
+                .ThenInclude(a => a.Pet)
+            .Include(a => a.Appointment)
+                .ThenInclude(a => a.Groomer)
+            .Where(n => n.AppointmentId == appointmentId)
+            .ToListAsync();
+    }
+
     public async Task<Notification> GetByIdAsync(int id)
     {
         return await _context.Notifications.FindAsync(id);
     }
 
-    public async Task AddAsync(Notification notification)
+    public async Task<int> AddAsync(Notification notification)
     {
         _context.Notifications.Add(notification);
         await _context.SaveChangesAsync();
+        return notification.NotificationId;
     }
 
     public async Task UpdateAsync(Notification notification)

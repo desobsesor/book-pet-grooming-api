@@ -1,9 +1,8 @@
 using BookPetGroomingAPI.Application.Features.Appointments.Commands;
 using BookPetGroomingAPI.Application.Features.Appointments.Queries;
-using BookPetGroomingAPI.Application.Features.Pets.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace BookPetGroomingAPI.API.Controllers;
 
 [ApiVersion("1.0")]
@@ -119,7 +118,7 @@ public class AppointmentController : ApiControllerBase
     [HttpGet("groomer/{groomerId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<PetDto>>> GetAppointmentsByGroomerId(int groomerId)
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentsByGroomerId(int groomerId)
     {
         var query = new GetAppointmentsByGroomerIdQuery(groomerId);
         var appointments = await Mediator(query);
@@ -134,7 +133,7 @@ public class AppointmentController : ApiControllerBase
     [HttpGet("pet/{petId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<PetDto>>> GetAppointmentsByPetId(int petId)
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentsByPetId(int petId)
     {
         var query = new GetAppointmentsByPetIdQuery(petId);
         var appointments = await Mediator(query);
@@ -150,26 +149,44 @@ public class AppointmentController : ApiControllerBase
     [HttpGet("appointment-date/{date}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<PetDto>>> GetAppointmentsByAppointmentDate(DateTime date)
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentsByAppointmentDate(DateTime date)
     {
         var query = new GetAppointmentsByAppointmentDateQuery(date);
         var appointments = await Mediator(query);
         return Ok(appointments);
     }
 
-
     /// <summary>
     /// Retrieves all appointments for a specific status
     /// </summary>
-    /// <param name="status">status</param>
-    /// <returns>List of appointments</returns>
+    /// <param name="status">Appointment status to filter (completed, approved, cancelled, pending)</param>
+    /// <returns>List of filtered appointments</returns>
+    /// <response code="200">Returns the requested appointments</response>
+    /// <response code="404">No appointments found with specified status</response>
     [HttpGet("status/{status}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<PetDto>>> GetAppointmentsByStatus(string status)
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointmentsByStatus(string status)
     {
         var query = new GetAppointmentsByStatusQuery(status);
         var appointments = await Mediator(query);
         return Ok(appointments);
+    }
+
+    /// <summary>
+    /// Deletes a notification by its ID
+    /// </summary>
+    /// <param name="id">Notification ID</param>
+    /// <returns>No content</returns>
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "AdminOnly")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAppointment(int id)
+    {
+        var command = new DeleteAppointmentCommand(id);
+        await Mediator(command);
+        return NoContent();
     }
 }

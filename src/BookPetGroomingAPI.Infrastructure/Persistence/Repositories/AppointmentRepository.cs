@@ -13,18 +13,26 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
 
     public async Task<Appointment?> GetByIdAsync(int id)
     {
-        return await _context.Appointments.FindAsync(id);
+        return await _context.Appointments
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .FirstOrDefaultAsync(a => a.AppointmentId == id);
     }
 
     public async Task<IEnumerable<Appointment>> GetAllAsync()
     {
-        return await _context.Appointments.ToListAsync();
+        return await _context.Appointments
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Appointment>> GetActiveAsync()
     {
         return await _context.Appointments
-            .Where(a => a.Status != null)
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .Where(a => a.Status == "Scheduled" || a.Status == "Pending")
             .ToListAsync();
     }
 
@@ -41,16 +49,6 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
-    {
-        var appointment = await _context.Appointments.FindAsync(id);
-        if (appointment != null)
-        {
-            //appointment.Deactivate();
-            await _context.SaveChangesAsync();
-        }
-    }
-
     public async Task<bool> AppointmentExistsAsync(int petId, DateTime appointmentDate)
     {
         return await _context.Appointments
@@ -60,28 +58,47 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
     public async Task<IEnumerable<Appointment>> GetByGroomerIdAsync(int groomerId)
     {
         return await _context.Appointments
-            .Where(p => p.GroomerId == groomerId)
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .Where(a => a.GroomerId == groomerId)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Appointment>> GetByPetIdAsync(int petId)
     {
         return await _context.Appointments
-            .Where(p => p.PetId == petId)
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .Where(a => a.PetId == petId)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Appointment>> GetByAppointmentDateAsync()
+    public async Task<IEnumerable<Appointment>> GetByAppointmentDateAsync(DateTime appointmentDate)
     {
         return await _context.Appointments
-            .Where(p => p.AppointmentDate == DateTime.UtcNow)  
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .Where(a => a.AppointmentDate == appointmentDate)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Appointment>> GetByStatusAsync(string status)
     {
         return await _context.Appointments
-            .Where(p => p.Status == status)
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer)
+            .Where(a => a.Status == status)
             .ToListAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var appointment = await _context.Appointments.Include(a => a.Notifications).FirstOrDefaultAsync(a => a.AppointmentId == id);
+        if (appointment != null)
+        {
+            _context.Notifications.RemoveRange(appointment.Notifications);
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BookPetGroomingAPI.Application.Common;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
 using MediatR;
@@ -65,7 +66,7 @@ namespace BookPetGroomingAPI.Application.Features.Users.Commands
                 var user = new User(
                     username: request.Username,
                     email: request.Email,
-                    passwordHash: request.PasswordHash,
+                    passwordHash: SecurityUtils.GenerateSecurePassword(),
                     role: request.Role
                 );
 

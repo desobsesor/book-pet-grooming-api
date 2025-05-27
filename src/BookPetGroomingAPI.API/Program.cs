@@ -1,14 +1,13 @@
-using System.IO.Compression;
-using System.Reflection;
 using BookPetGroomingAPI.API.Extensions;
+using BookPetGroomingAPI.API.Filters;
 using BookPetGroomingAPI.API.Middlewares;
 using BookPetGroomingAPI.Application;
 using BookPetGroomingAPI.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using BookPetGroomingAPI.API.Filters;
-using BookPetGroomingAPI.API.Configuration;
+using System.IO.Compression;
+using System.Reflection;
 
 Console.WriteLine("Starting Program.cs execution..."); // Debug log
 Console.WriteLine("Creating WebApplication builder..."); // Debug log
@@ -34,6 +33,14 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.MaxDepth = 64;
+    });
+
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
@@ -69,7 +76,8 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement

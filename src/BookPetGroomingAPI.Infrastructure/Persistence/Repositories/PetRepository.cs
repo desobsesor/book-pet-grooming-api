@@ -13,12 +13,20 @@ public class PetRepository(ApplicationDbContext context) : IPetRepository
 
     public async Task<Pet?> GetByIdAsync(int id)
     {
-        return await _context.Pets.FindAsync(id);
+        return await _context.Pets
+         .Include(a => a.Customer)
+         .Include(a => a.Breed)
+        .Include(a => a.Category)
+            .FirstOrDefaultAsync(a => a.PetId == id);
     }
 
     public async Task<IEnumerable<Pet>> GetAllAsync()
     {
-        return await _context.Pets.ToListAsync();
+        return await _context.Pets
+            .Include(a => a.Customer)
+            .Include(a => a.Breed)
+            .Include(a => a.Category)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Pet>> GetActiveAsync()
@@ -46,7 +54,7 @@ public class PetRepository(ApplicationDbContext context) : IPetRepository
         var pet = await _context.Pets.FindAsync(id);
         if (pet != null)
         {
-            // pet.Deactivate();
+            pet.Deactivate();
             await _context.SaveChangesAsync();
         }
     }
@@ -60,6 +68,8 @@ public class PetRepository(ApplicationDbContext context) : IPetRepository
     public async Task<IEnumerable<Pet>> GetByCustomerIdAsync(int customerId)
     {
         return await _context.Pets
+            .Include(a => a.Breed)
+            .Include(a => a.Category)
             .Where(p => p.CustomerId == customerId)
             .ToListAsync();
     }
