@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookPetGroomingAPI.Domain.Entities
 {
+    /// <summary>
+    /// Represents a groomer in the system.
+    /// </summary>
     [Table("groomers", Schema = "dbo")]
     public class Groomer
     {
@@ -35,12 +38,15 @@ namespace BookPetGroomingAPI.Domain.Entities
         [Column("updated_at")]
         public DateTime UpdatedAt { get; private set; }
 
+        [Column("user_id")]
+        public int? UserId { get; private set; }
+
         // Navigation properties
         public ICollection<Customer>? Customers { get; private set; }
 
         private Groomer() { }
 
-        public Groomer(string firstName, string lastName, string? email, string? phone, string? specialization, int yearsOfExperience)
+        public Groomer(string firstName, string lastName, string? email, string? phone, string? specialization, int yearsOfExperience, int? userId)
         {
             if (string.IsNullOrWhiteSpace(firstName))
                 throw new ArgumentException("First name cannot be empty", nameof(firstName));
@@ -52,6 +58,7 @@ namespace BookPetGroomingAPI.Domain.Entities
             Phone = phone;
             Specialization = specialization;
             YearsOfExperience = yearsOfExperience;
+            UserId = userId;
             IsActive = true;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;

@@ -97,17 +97,19 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.DateOfBirth).IsRequired();
             entity.Property(e => e.Gender).HasMaxLength(15);
             entity.Property(e => e.Weight).HasPrecision(10, 2);
+            entity.Property(e => e.Allergies).HasMaxLength(500);
+            entity.Property(e => e.Notes).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
-            entity.HasOne(e => e.Owner)
-                  .WithMany(c => c.Pets)
+            entity.HasOne(e => e.Customer)
+                  .WithMany(a => a.Pets)
                   .HasForeignKey(e => e.CustomerId)
                   .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.Breed)
+            entity.HasOne(a => a.Breed)
                   .WithMany()
                   .HasForeignKey(e => e.BreedId)
                   .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.Category)
+            entity.HasOne(a => a.Category)
                   .WithMany()
                   .HasForeignKey(e => e.CategoryId)
                   .OnDelete(DeleteBehavior.Restrict);
@@ -139,7 +141,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .OnDelete(DeleteBehavior.Restrict);
         });
 
-
         // Notification entity configuration
         modelBuilder.Entity<Notification>(entity =>
         {
@@ -149,11 +150,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt);
             entity.HasOne(e => e.Appointment)
-                  .WithMany()
+                  .WithMany(a => a.Notifications)
                   .HasForeignKey(e => e.AppointmentId)
                   .OnDelete(DeleteBehavior.SetNull);
         });
 
+        // User entity configuration
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId);
@@ -166,6 +168,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.UpdatedAt).IsRequired();
         });
 
+        // Session entity configuration
         modelBuilder.Entity<Session>(entity =>
         {
             entity.HasKey(e => e.SessionId);

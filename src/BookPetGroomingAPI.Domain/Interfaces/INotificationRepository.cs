@@ -14,6 +14,13 @@ namespace BookPetGroomingAPI.Domain.Interfaces
         Task<IEnumerable<Notification>> GetAllAsync();
 
         /// <summary>
+        /// Gets all notifications for a given Appointment.
+        /// </summary>
+        /// <param name="appointmentId">Appointment identifier.</param>
+        /// <returns>List of Notification.</returns>
+        Task<IEnumerable<Notification>> GetByAppointmentIdAsync(int petId);
+
+        /// <summary>
         /// Gets a notification by its identifier.
         /// </summary>
         /// <param name="id">Notification identifier.</param>
@@ -25,7 +32,7 @@ namespace BookPetGroomingAPI.Domain.Interfaces
         /// </summary>
         /// <param name="notification">Notification entity.</param>
         /// <returns>Task.</returns>
-        Task AddAsync(Notification notification);
+        Task<int> AddAsync(Notification notification);
 
         /// <summary>
         /// Updates an existing notification.

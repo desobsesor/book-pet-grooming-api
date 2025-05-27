@@ -5,7 +5,7 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
     /// <summary>
     /// Command to create a new pet grooming appointment
     /// </summary>
-    public class CreateAppointmentCommand(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, int estimatedDuration, string status, decimal price, string? notes) : IRequest<int>
+    public class CreateAppointmentCommand(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, int estimatedDuration, string status, decimal price, string? notes, int createdByUserId) : IRequest<int>
     {
         /// <summary>
         /// Pet ID for the appointment
@@ -46,5 +46,10 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
         /// Additional notes about the appointment
         /// </summary>
         public string? Notes { get; set; } = notes;
+
+        /// <summary>
+        /// Additional notes about the appointment
+        /// </summary>
+        public int CreatedByUserId { get; set; } = createdByUserId;
     }
 }

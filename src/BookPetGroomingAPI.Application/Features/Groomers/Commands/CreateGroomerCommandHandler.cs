@@ -1,4 +1,5 @@
 using AutoMapper;
+using BookPetGroomingAPI.Application.Common;
 using BookPetGroomingAPI.Domain.Entities;
 using BookPetGroomingAPI.Domain.Interfaces;
 using MediatR;
@@ -8,22 +9,8 @@ namespace BookPetGroomingAPI.Application.Features.Groomers.Commands
     /// <summary>
     /// Handler for processing the CreateGroomerCommand and creating a new groomer
     /// </summary>
-    public class CreateGroomerCommandHandler : IRequestHandler<CreateGroomerCommand, int>
+    public class CreateGroomerCommandHandler(IGroomerRepository groomerRepository, IUserRepository userRepository, IMapper mapper) : IRequestHandler<CreateGroomerCommand, int>
     {
-        private readonly IGroomerRepository _groomerRepository;
-        private readonly IMapper _mapper;
-
-        /// <summary>
-        /// Constructor for CreateGroomerCommandHandler
-        /// </summary>
-        /// <param name="groomerRepository">Repository for groomer operations</param>
-        /// <param name="mapper">Mapping service</param>
-        public CreateGroomerCommandHandler(IGroomerRepository groomerRepository, IMapper mapper)
-        {
-            _groomerRepository = groomerRepository;
-            _mapper = mapper;
-        }
-
         /// <summary>
         /// Handles the command to create a new groomer
         /// </summary>
@@ -42,6 +29,22 @@ namespace BookPetGroomingAPI.Application.Features.Groomers.Commands
 
             try
             {
+                var username = SecurityUtils.GenerateUniqueUsername(request.FirstName, request.LastName);
+                var existingCustomer = await userRepository.UserExistsAsync(username);
+
+                if (existingCustomer)
+                {
+                    username = SecurityUtils.GenerateUniqueUsername(request.FirstName, request.Email.Split('@')[0]);
+                }
+                // Create a new user entity for the customer
+                var user = new User(
+                    username: username,
+                    email: request.Email,
+                    passwordHash: SecurityUtils.GenerateSecurePassword(),
+                    role: "groomer");
+
+                // Add the user to the repository
+                var userId = await userRepository.AddAsync(user);
                 // Create a new groomer entity using the domain constructor
                 // This approach respects the domain model's encapsulation and validation
                 var groomer = new Groomer(
@@ -50,11 +53,12 @@ namespace BookPetGroomingAPI.Application.Features.Groomers.Commands
                     email: request.Email,
                     phone: request.Phone,
                     specialization: request.Specialization,
-                    yearsOfExperience: request.YearsOfExperience
+                    yearsOfExperience: request.YearsOfExperience,
+                    userId: userId
                 );
 
                 // Add the groomer to the repository
-                var groomerId = await _groomerRepository.AddAsync(groomer);
+                var groomerId = await groomerRepository.AddAsync(groomer);
 
                 return groomerId;
             }

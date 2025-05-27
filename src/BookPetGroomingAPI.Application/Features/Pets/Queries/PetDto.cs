@@ -16,6 +16,9 @@ public class PetDto : IMapFrom<Pet>
     public int CategoryId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public Customer? Customer { get; private set; }
+    public Breed? Breed { get; private set; }
+    public PetCategory? Category { get; private set; }
 
     public void Mapping(Profile profile)
     {

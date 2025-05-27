@@ -67,7 +67,6 @@ namespace BookPetGroomingAPI.Domain.Entities
         /// <summary>
         /// Navigation property for the associated user
         /// </summary>
-        [ForeignKey("UserId")]
         public User? User { get; private set; }
 
         // Required by EF Core

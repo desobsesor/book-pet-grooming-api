@@ -10,7 +10,7 @@ namespace BookPetGroomingAPI.Application.Features.Customers.Commands
     /// <param name="email">Customer email</param>
     /// <param name="phone">Customer phone number</param>
     /// <param name="address">Customer address</param>
-    public class CreateCustomerCommand(string firstName, string lastName, string email, string phone, string address) : IRequest<int>
+    public class CreateCustomerCommand(string firstName, string lastName, string email, string phone, string address, int? userId) : IRequest<int>
     {
         /// <summary>
         /// Customer name
@@ -36,5 +36,10 @@ namespace BookPetGroomingAPI.Application.Features.Customers.Commands
         /// Customer address
         /// </summary>
         public string Address { get; set; } = address;
+
+        /// <summary>
+        /// Customer UserId
+        /// </summary>
+        public int? UserId { get; set; } = userId;
     }
 }

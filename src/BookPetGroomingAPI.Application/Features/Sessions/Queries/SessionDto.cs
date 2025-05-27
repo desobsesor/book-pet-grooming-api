@@ -1,5 +1,6 @@
 using AutoMapper;
 using BookPetGroomingAPI.Application.Common.Mappings;
+using BookPetGroomingAPI.Application.Features.Users.Queries;
 using BookPetGroomingAPI.Domain.Entities;
 
 namespace BookPetGroomingAPI.Application.Features.Sessions.Queries;
@@ -17,6 +18,7 @@ public class SessionDto : IMapFrom<Session>
     public DateTime ExpiresAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public required UserLightDto User { get; set; }
 
     public void Mapping(Profile profile)
     {

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BookPetGroomingAPI.Domain.Entities
 {
@@ -28,6 +27,7 @@ namespace BookPetGroomingAPI.Domain.Entities
 
         [Column("estimated_duration")]
         public int EstimatedDuration { get; private set; }
+
         public string Status { get; private set; }
         public decimal Price { get; private set; }
         public string Notes { get; private set; }
@@ -42,9 +42,13 @@ namespace BookPetGroomingAPI.Domain.Entities
         public Pet? Pet { get; private set; }
         public Groomer? Groomer { get; private set; }
 
+        [Column("created_by_user_id")]
+        public int CreatedByUserId { get; private set; }
+
+        public List<Notification> Notifications { get; private set; } = [];
         private Appointment() { }
 
-        public Appointment(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, string status, string notes, decimal price)
+        public Appointment(int petId, int groomerId, DateTime appointmentDate, TimeOnly startTime, string status, string notes, decimal price, int createdByUserId)
         {
             if (string.IsNullOrWhiteSpace(status))
                 throw new ArgumentException("Status cannot be empty", nameof(status));
@@ -57,9 +61,11 @@ namespace BookPetGroomingAPI.Domain.Entities
             Status = status;
             Price = price;
             Notes = notes;
+            CreatedByUserId = createdByUserId;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
+
 
         public void UpdateStatus(string status)
         {

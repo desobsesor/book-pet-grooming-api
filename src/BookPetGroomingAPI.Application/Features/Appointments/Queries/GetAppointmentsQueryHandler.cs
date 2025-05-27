@@ -7,21 +7,13 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Queries
     /// <summary>
     /// Handler for processing the GetAppointmentsQuery and returning the list of appointments
     /// </summary>
-    public class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery, List<AppointmentDto>>
+    /// <remarks>
+    /// Constructor for GetAppointmentsQueryHandler
+    /// </remarks>
+    /// <param name="appointmentRepository">Repository for appointment operations</param>
+    /// <param name="mapper">Mapping service</param>
+    public class GetAppointmentsQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper) : IRequestHandler<GetAppointmentsQuery, List<AppointmentDto>>
     {
-        private readonly IAppointmentRepository _appointmentRepository;
-        private readonly IMapper _mapper;
-
-        /// <summary>
-        /// Constructor for GetAppointmentsQueryHandler
-        /// </summary>
-        /// <param name="appointmentRepository">Repository for appointment operations</param>
-        /// <param name="mapper">Mapping service</param>
-        public GetAppointmentsQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper)
-        {
-            _appointmentRepository = appointmentRepository;
-            _mapper = mapper;
-        }
 
         /// <summary>
         /// Handles the query to retrieve all appointments
@@ -31,8 +23,8 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Queries
         /// <returns>List of appointment DTOs</returns>
         public async Task<List<AppointmentDto>> Handle(GetAppointmentsQuery request, CancellationToken cancellationToken)
         {
-            var appointments = await _appointmentRepository.GetAllAsync();
-            return _mapper.Map<List<AppointmentDto>>(appointments);
+            var appointments = await appointmentRepository.GetAllAsync();
+            return mapper.Map<List<AppointmentDto>>(appointments);
         }
     }
 }

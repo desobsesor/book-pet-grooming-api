@@ -16,15 +16,16 @@ public class BreedRepository(ApplicationDbContext context) : IBreedRepository
         return await _context.Breeds.ToListAsync();
     }
 
-    public async Task<Breed> GetByIdAsync(int id)
+    public async Task<Breed?> GetByIdAsync(int id)
     {
         return await _context.Breeds.FindAsync(id);
     }
 
-    public async Task AddAsync(Breed breed)
+    public async Task<int> AddAsync(Breed breed)
     {
         _context.Breeds.Add(breed);
         await _context.SaveChangesAsync();
+        return breed.BreedId;
     }
 
     public async Task UpdateAsync(Breed breed)
