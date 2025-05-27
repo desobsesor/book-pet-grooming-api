@@ -19,6 +19,7 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
             .FirstOrDefaultAsync(a => a.AppointmentId == id);
     }
 
+
     public async Task<IEnumerable<Appointment>> GetAllAsync()
     {
         return await _context.Appointments
@@ -89,6 +90,13 @@ public class AppointmentRepository(ApplicationDbContext context) : IAppointmentR
             .Include(a => a.Groomer)
             .Where(a => a.Status == status)
             .ToListAsync();
+    }
+
+    public IQueryable<Appointment> GetAllQueryable()
+    {
+        return _context.Appointments
+            .Include(a => a.Pet)
+            .Include(a => a.Groomer);
     }
 
     public async Task DeleteAsync(int id)
