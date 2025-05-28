@@ -49,6 +49,12 @@ builder.Services.AddApiVersioning(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 
+// Configure Kestrel
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080);
+});
+
 // Configure Swagger
 builder.Services.AddSwaggerGen(c =>
 {
@@ -127,7 +133,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configure JWT Autentication 
+// Configure JWT Authentication 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Configure rate limiting
