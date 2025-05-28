@@ -85,7 +85,8 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
                 lastName: "Test Customer",
                 email: "new.test@example.com",
                 phone: "555-333-4444",
-                address: "333 Test Drive"
+                address: "333 Test Drive",
+                userId: 1
             );
 
             var customerId = 1;
@@ -128,7 +129,8 @@ namespace BookPetGroomingAPI.UnitTests.Controllers
                 lastName: "Test Customer",
                 email: "exception.test@example.com",
                 phone: "555-999-9999",
-                address: "999 Exception Avenue"
+                address: "999 Exception Avenue",
+                userId: 1
             );
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateCustomerCommand>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("Test exception"));
