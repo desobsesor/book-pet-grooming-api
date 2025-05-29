@@ -50,10 +50,12 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure Kestrel
+/* 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(8080);
 });
+*/
 
 // Configure Swagger
 builder.Services.AddSwaggerGen(c =>
