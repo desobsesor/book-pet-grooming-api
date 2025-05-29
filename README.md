@@ -125,7 +125,7 @@ dotnet test tests/BookPetGroomingAPI.UnitTests/BookPetGroomingAPI.UnitTests.cspr
 ```
 
 <h2>Test Coverage Guide</h2>
-<p>For detailed instructions on how to execute and interpret test coverage, please refer to the <a href="./docs/guides/test-coverage-guide.md">Test Coverage Guide</a>.</p>
+<p>For detailed instructions on how to execute and interpret test coverage, please refer to the <a href="./docs/test-coverage-guide.md">Test Coverage Guide</a>.</p>
 
 
 ## Built with 🛠️
