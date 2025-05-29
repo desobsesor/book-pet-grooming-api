@@ -19,7 +19,11 @@
 <a href="https://github.com/moq/moq4" target="_blank"><img src="https://img.shields.io/badge/Moq-4.18.4-lightblue" alt="Moq"></a>
 <a href="https://fluentassertions.com/" target="_blank"><img src="https://img.shields.io/badge/FluentAssertions-6.12.0-9cf" alt="FluentAssertions"></a>
 <a href="https://www.microsoft.com/sql-server" target="_blank"><img src="https://img.shields.io/badge/SQL%20Server-2022-red" alt="SQL Server"></a>
+<a href="https://github.com/danielpalme/ReportGenerator" target="_blank"><img src="https://img.shields.io/badge/ReportGenerator-5.0.0-yellow" alt="ReportGenerator"></a>
+<a href="https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters" target="_blank"><img src="https://img.shields.io/badge/Coverage%20Gutters-VS%20Code%20Extension-blue" alt="Coverage Gutters"></a>
+<a href="https://github.com/RicoSuter/NSwag" target="_blank"><img src="https://img.shields.io/badge/NSwag-13.13.2-blue" alt="NSwag"></a>
 </p>
+
 
 ## Description📍
 
@@ -70,18 +74,10 @@ Contains components, utilities, and models that are shared across multiple layer
 - **Dependency Injection**: To decouple components
 - **Options Pattern**: To manage configuration
 - **Specification Pattern**: For complex queries
-
-## Technologies Used 💻
-
-- ASP.NET Core 8.0
-- Entity Framework Core
-- SQL Server
-- MediatR
-- FluentValidation
-- AutoMapper
-- Serilog
-- Swagger/OpenAPI
-- xUnit, Moq, FluentAssertions
+- **Validation Pattern**: For data validation
+- **Logging**: To track application events and errors
+- **Error Handling**: To provide meaningful error messages
+- **API Versioning**: To support multiple versions of the API
 
 ## Database Schema 📚
 
@@ -122,6 +118,15 @@ mvn clean install
 ```bash
 dotnet run --project src/BookPetGroomingAPI.API/BookPetGroomingAPI.API.csproj
 ```
+## Testing 🧪
+To run the tests, execute the following command:
+```bash
+dotnet test tests/BookPetGroomingAPI.UnitTests/BookPetGroomingAPI.UnitTests.csproj
+```
+
+<h2>Test Coverage Guide</h2>
+<p>For detailed instructions on how to execute and interpret test coverage, please refer to the <a href="./docs/guides/test-coverage-guide.md">Test Coverage Guide</a>.</p>
+
 
 ## Built with 🛠️
 
@@ -139,10 +144,6 @@ _Tools and Technologies used_
 - [xUnit](https://xunit.net/) - Unit testing framework
 - [Moq](https://github.com/moq/moq4) - Mocking framework for tests
 - [FluentAssertions](https://fluentassertions.com/) - Expressive assertions for tests
-
-## Support 🔍
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Versioned 📌
 

@@ -28,9 +28,9 @@ public class AppointmentDto : IMapFrom<Appointment>
     [SwaggerSchema(Description = "Price of the appointment.")]
     public decimal Price { get; set; }
     [SwaggerSchema(Description = "Status of the appointment. Possible values: completed, approved, cancelled, pending.")]
-    public required string Status { get; set; }
+    public string Status { get; set; } = string.Empty;
     [SwaggerSchema(Description = "Additional notes for the appointment.")]
-    public required string Notes { get; set; }
+    public string Notes { get; set; } = string.Empty;
     [SwaggerSchema(Description = "Date and time when the appointment was created.")]
     public DateTime CreatedAt { get; set; }
     [SwaggerSchema(Description = "Date and time when the appointment was last updated.")]

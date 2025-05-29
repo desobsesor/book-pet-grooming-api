@@ -35,7 +35,7 @@ namespace BookPetGroomingAPI.Application.Features.Appointments.Commands
         /// <summary>
         /// Current status of the appointment (e.g. Scheduled, Completed, Cancelled)
         /// </summary>
-        public required string Status { get; set; } = status;
+        public string Status { get; set; } = status;
 
         /// <summary>
         /// Service price
